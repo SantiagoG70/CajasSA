@@ -12,6 +12,8 @@ namespace Boxes.Shared.Entites
 
         [Required(ErrorMessage = "La direccion es obligatoria")]
         public string Direccion { get; set; } = null!;
+
+        public ICollection<Factura>? Facturas { get; set; } = null!;
     }
 }
  

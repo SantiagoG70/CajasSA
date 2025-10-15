@@ -32,6 +32,7 @@ namespace Boxes.Shared.Entites
         [ForeignKey("Rol")]
         public int RolId { get; set; }
 
+        // navigation property
         public Rol? Rol { get; set; } = null!;
     }
 }
