@@ -17,19 +17,22 @@ namespace Boxes.Shared.Entites
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string Name { get; set; } = null!;
 
+        
         [Required(ErrorMessage = "el campo {0} es obligatorio")]
         [StringLength(100, MinimumLength = 10, ErrorMessage = "contraseña insuficiente")]
         [DataType(DataType.Password)]
-        public string password { get; set; } = null!;
+        [Display(Name = "Contraseña")]
+        public string Password { get; set; } = null!;
 
         [Required(ErrorMessage = "El correo es obligatorio.")]
         [EmailAddress(ErrorMessage = "El formato del correo no es válido.")]
         [StringLength(100)]
         public string Email { get; set; } = null!;
 
+        [Display(Name = "Telefono")]
         [Phone(ErrorMessage = "El número de teléfono no es válido.")]
         [StringLength(20)]
-        public string Telefono { get; set; } = null!;
+        public string Phone { get; set; } = null!;
 
         [ForeignKey("Rol")]
         public int RolId { get; set; }
