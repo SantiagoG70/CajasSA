@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace boxes.Backend.Controllers;
 
+//aplicating SOLID principles
 public class GenericController<T> : Controller where T : class
 {
     private readonly IGenericUnitOfWork<T> _unitOfWork;
