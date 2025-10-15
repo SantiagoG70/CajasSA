@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Boxes.Shared.Interfaces;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Boxes.Shared.Entites
 {
-    public class Usuario
+    public class Usuario : IEntityWithName
     {
         public int Id { get; set; }
 
@@ -12,7 +13,6 @@ namespace Boxes.Shared.Entites
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string Name { get; set; } = null!;
 
-        
         [Required(ErrorMessage = "el campo {0} es obligatorio")]
         [StringLength(100, MinimumLength = 10, ErrorMessage = "contraseña insuficiente")]
         [DataType(DataType.Password)]
