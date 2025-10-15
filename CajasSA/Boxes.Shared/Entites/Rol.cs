@@ -1,14 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Boxes.Shared.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace Boxes.Shared.Entites;
 
-public class Rol
+public class Rol : IEntityWithName
 {
     public int Id { get; set; }
 
-    [MaxLength(100, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres.")]
+    [Display(Name = "Nombre")]
+    [StringLength(30, MinimumLength = 4, ErrorMessage = "el nombre dene tener entre 4 y 30 caracteres")]
     [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-    public string Nombre { get; set; } = null!;
+    public string Name { get; set; } = null!;
 
     public ICollection<Usuario>? Usuarios { get; set; } = null!;
 }
