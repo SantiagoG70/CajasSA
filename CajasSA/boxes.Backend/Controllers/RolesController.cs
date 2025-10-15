@@ -11,6 +11,6 @@ public class RolesController : GenericController<Rol>
 {
     public RolesController(IGenericUnitOfWork<Rol> unit) : base(unit)
     {
-        int culo = 0;   
+        
     }
 }
