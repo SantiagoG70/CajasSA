@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Boxes.Shared.Entites;
 
-namespace Boxes.Shared.Entites
+public class Proveedor
 {
-    public class Proveedor
-    {
-        public int Id { get; set; }
-        public string Name { get; set; } = null!;
-        public string Phone { get; set; } = null!;
-        public string Address { get; set; } = null!;
-        public Producto ProductType { get; set; } = null!;
+    public int Id { get; set; }
+    public string Name { get; set; } = null!;
+    public string Phone { get; set; } = null!;
+    public string Address { get; set; } = null!;
+    public Producto ProductType { get; set; } = null!;
 
-        public ICollection<Producto>? Productos { get; set; } = null!; // navigation property
-    }
+    public ICollection<Producto>? Productos { get; set; } = null!; // navigation property
 }
- 
