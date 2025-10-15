@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Boxes.Shared.Entites
+namespace Boxes.Shared.Entites;
+
+public class Cliente
 {
-    public class Cliente: Usuario
-    {
+    [Required(ErrorMessage = "La direccion es obligatoria")]
+    public string Direccion { get; set; } = null!;
 
-        [Required(ErrorMessage = "La direccion es obligatoria")]
-        public string Direccion { get; set; } = null!;
-    }
+    public int UsuarioId { get; set; }
+    public Usuario? Usuario { get; set; }
 }
- 
