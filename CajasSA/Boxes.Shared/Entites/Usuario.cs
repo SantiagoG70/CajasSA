@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Boxes.Shared.Entites
 {
@@ -38,7 +33,5 @@ namespace Boxes.Shared.Entites
         public int RolId { get; set; }
 
         public Rol? Rol { get; set; } = null!;
-
-
     }
 }
