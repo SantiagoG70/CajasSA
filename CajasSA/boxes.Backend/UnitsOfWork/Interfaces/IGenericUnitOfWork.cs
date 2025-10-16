@@ -4,7 +4,7 @@ namespace boxes.Backend.UnitsOfWork.Interfaces;
 
 public interface IGenericUnitOfWork<T> where T : class
 {
-    Task<ActionResponse<IEnumerable<T>>> GetAsync();
+    Task<ActionResponse<IEnumerable<T>>> GetAsync(); //using IEnumerable for collections
 
     Task<ActionResponse<T>> AddAsync(T model);
 

@@ -8,9 +8,9 @@ public class GenericUnitOfWork<T> : IGenericUnitOfWork<T> where T : class
 {
     private readonly IGenericRepository<T> _repository;
 
-    public GenericUnitOfWork(IGenericRepository<T> repository)
+    public GenericUnitOfWork(IGenericRepository<T> repository) 
     {
-        _repository = repository;
+        _repository = repository; // Dependency Injection of the repository 
     }
 
     public virtual async Task<ActionResponse<T>> AddAsync(T model) => await _repository.AddAsync(model);
