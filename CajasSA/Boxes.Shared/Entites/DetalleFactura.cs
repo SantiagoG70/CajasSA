@@ -1,5 +1,6 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Boxes.Shared.Entites;
 
@@ -14,6 +15,13 @@ public class DetalleFactura
     public decimal unit_price { get; set; }
     public decimal subtotal { get; set; }
     public decimal Total { get; set; }
-    public int FacturaId { get; set; }
-    public Factura? Factura { get; set; }
+
+    [ForeignKey("Factura")]
+    public int FacturaId { get; set; } // foreign key
+    public Factura? Factura { get; set; } = null!; // navigation property
+
+    [ForeignKey("Producto")]
+    public int ProductoId { get; set; } // foreign key
+    public Producto? Producto { get; set; } = null!; // navigation property
+
 }

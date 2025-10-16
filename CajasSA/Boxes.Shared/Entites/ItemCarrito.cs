@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Boxes.Shared.Entites;
 
@@ -18,4 +19,12 @@ public class ItemCarrito
     [Display(Name = "Precio Unitario")]
     [Required(ErrorMessage = "El campo {0} es obligatorio.")]
     public double UnitPrice { get; set; }
+
+    [ForeignKey("Carrito")]
+    public int CarritoId { get; set; } //foreign key
+    public Carrito? Carrito { get; set; } = null!; //navigation property
+
+    [ForeignKey("Producto")]
+    public int ProductoId { get; set; }
+    public Producto? Producto { get; set; }
 }
