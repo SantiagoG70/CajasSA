@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Boxes.Shared.Entites;
 
-public class Producto
-{
-    public int Id { get; set; }
+    public class Producto
+    {
+        public int Id { get; set; }
 
         [Display(Name = "Nombre Producto")]
         [StringLength(50, MinimumLength = 3)]
@@ -44,12 +44,19 @@ public class Producto
 
         [ForeignKey("Proveedor")]
         public int ProveedorId { get; set; }
+
         public Proveedor? Proveedor { get; set; }
 
-
+        [ForeignKey("ItemCarrito")]
         public ItemCarrito? ItemCarrito { get; set; }
 
-
+        [ForeignKey("DetalleFactura")]
         public DetalleFactura? DetalleFactura { get; set; }
+
+        [ForeignKey("Inventario")]
+        public Inventario? Inventario { get; set; }
+
     }
-}
+
+
+

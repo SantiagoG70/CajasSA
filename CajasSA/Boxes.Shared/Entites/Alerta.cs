@@ -12,4 +12,6 @@ public class Alerta
     [Display(Name = "Descripcion Alerta")]
     [StringLength(200, MinimumLength = 10, ErrorMessage = "la descripcion dene tener entre 10 y 200 caracteres")]
     public string Description { get; set; } = null!;
+
+    public Inventario? Inventario { get; set; }
 }
