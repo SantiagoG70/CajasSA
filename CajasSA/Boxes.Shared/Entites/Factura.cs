@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Boxes.Shared.Entites;
 
@@ -11,21 +10,8 @@ public class Factura
     [Required(ErrorMessage = "El campo {0} es obligatorio.")]
     public DateTime Date { get; set; }
 
-    [ForeignKey("Carrito")]
-    public int CarritoId { get; set; } // foreign key
-
-    public Carrito? Carrito { get; set; } = null!; // navigation property
-
-    [ForeignKey("Cliente")]
-    public int ClienteId { get; set; } // foreign key 
-    public Cliente? Cliente { get; set; } = null!; // navigation property
-
-    public ICollection<DetalleFactura>? Detalles { get; set; }
+    public int CarritoId { get; set; }
+    public Carrito? Carrito { get; set; }
+    public int ClienteId { get; set; }
+    public Cliente? Cliente { get; set; } = null!;
 }
-
-
-
-   
-
-   
-   

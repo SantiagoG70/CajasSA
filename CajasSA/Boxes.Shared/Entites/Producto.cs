@@ -51,10 +51,5 @@ namespace Boxes.Shared.Entites
         public int ProveedorId { get; set; } //foreign key
 
         public Proveedor? Proveedor { get; set; } = null!; //navigation property
-
-        public ItemCarrito? ItemCarrito { get; set; }
-
-        // Relación inversa 1 a 1 con DetalleFactura
-        public DetalleFactura? DetalleFactura { get; set; }
     }
 }
