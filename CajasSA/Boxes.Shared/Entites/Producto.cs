@@ -13,43 +13,48 @@ namespace Boxes.Shared.Entites
         public int Id { get; set; }
 
         [Display(Name = "Nombre Producto")]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "el nombre dene tener entre 3 y 50 caracteres")]
-        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        [StringLength(50, MinimumLength = 3)]
+        [Required]
         public string Name { get; set; } = null!;
 
         [Display(Name = "Cantidad del producto")]
-        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        public int quantity { get; set; }
+        [Required]
+        public int Quantity { get; set; }
 
         [Display(Name = "Precio del producto")]
-        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        [Required]
         public decimal Price { get; set; }
 
         [Display(Name = "Peso del producto")]
-        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        [Required]
         public decimal Weight { get; set; }
 
         [Display(Name = "Tipo del producto")]
-        [StringLength(30, MinimumLength = 3, ErrorMessage = "el tipo dene tener entre 3 y 30 caracteres")]
-        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        [StringLength(30, MinimumLength = 3)]
+        [Required]
         public string Type { get; set; } = null!;
 
         [Display(Name = "Fecha de ingreso")]
         [DataType(DataType.Date)]
-        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        [Required]
         public DateTime EntryDate { get; set; }
 
-        [Display(Name = "Stock Maximo")]
-        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        [Display(Name = "Stock Máximo")]
+        [Required]
         public int Max { get; set; }
 
-        [Display(Name = "Stock Minimo")]
-        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        [Display(Name = "Stock Mínimo")]
+        [Required]
         public int Min { get; set; }
 
         [ForeignKey("Proveedor")]
-        public int ProveedorId { get; set; } //foreign key
+        public int ProveedorId { get; set; }
+        public Proveedor? Proveedor { get; set; }
 
-        public Proveedor? Proveedor { get; set; } = null!; //navigation property
+
+        public ItemCarrito? ItemCarrito { get; set; }
+
+
+        public DetalleFactura? DetalleFactura { get; set; }
     }
 }
