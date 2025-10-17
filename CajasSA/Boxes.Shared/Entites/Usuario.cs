@@ -37,4 +37,8 @@ public class Usuario : IEntityWithName
 
     [Display(Name = "Rol del usuario")]
     public string? RolName => Rol != null ? Rol.Name : "Sin rol";
+
+    public virtual Cliente? Cliente { get; set; }
+    public virtual Administrador? Administrador { get; set; }
+    public virtual Empleado? Empleado { get; set; }
 }

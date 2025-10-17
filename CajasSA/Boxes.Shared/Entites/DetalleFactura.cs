@@ -12,8 +12,15 @@ public class DetalleFactura
     [StringLength(200, MinimumLength = 10)]
     public string Details { get; set; } = null!;
 
+    [Display(Name = "Precio Unitario")]
+    [Required]
     public decimal UnitPrice { get; set; }
+
+    [Display(Name = "Subtotal")]
+    [Required]
     public decimal Subtotal { get; set; }
+    [Display(Name = "Total")]
+    [Required]
     public decimal Total { get; set; }
 
    
