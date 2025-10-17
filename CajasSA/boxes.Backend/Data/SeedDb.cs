@@ -15,46 +15,36 @@ public class SeedDb
     {
         await _context.Database.EnsureCreatedAsync();
         await CheckRolesAsync();
+        await CheckProveedoresAsync();
     }
 
     private async Task CheckRolesAsync()
     {
         if (!_context.Roles.Any()) // Si no hay roles, los creamos
         {
-            _context.Roles.Add(new Rol { Name = "Administrador" });
-            _context.Roles.Add(new Rol { Name = "Cliente" });
-            _context.Roles.Add(new Rol { Name = "Empleado" });
+            var roles = new List<Rol>
+            {
+                new Rol { Name = "Administrador" },
+                new Rol { Name = "Cliente" },
+                new Rol { Name = "Empleado" }
+            };
+            _context.Roles.AddRange(roles);
         }
 
         await _context.SaveChangesAsync();
     }
 
-    private async Task CheckProductosAsync() {
-        if (!_context.Productos.Any()) { 
-            _context.Productos.Add(new Producto
+    public async Task CheckProveedoresAsync() {
+        if (!_context.Proveedores.Any()) // Si no hay proveedores, los creamos
+        {
+            var proveedores = new List<Proveedor>
             {
-                Name = "Caja Re-armada Pequeña",
-                Quantity = 3000,
-                Price = 100,
-                Weight = 0.02m,
-                Type = "Caja Re-armada",
-                EntryDate = DateTime.Now,
-                Max = 45000,
-                Min = 50
-            });
-            _context.Productos.Add(new Producto
-            {
-                Name = "Caja Re-armada Mediana",
-                Quantity = 2000,
-                Price = 150,
-                Weight = 0.05m,
-                Type = "Caja Re-armada",
-                EntryDate = DateTime.Now,
-                Max = 30000,
-                Min = 30,
-                
-            });
+                new Proveedor { Name = "Reciclando Carton", Phone = "123-456-7890", Address = "Calle Falsa 123, Ciudad A", ProductType = "Caja Re-armada" }
+            };
+            _context.Proveedores.AddRange(proveedores);
+        }      
             await _context.SaveChangesAsync();
-        }
     }
+
+    
 }
