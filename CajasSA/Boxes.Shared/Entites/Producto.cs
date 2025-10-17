@@ -47,13 +47,13 @@ namespace Boxes.Shared.Entites;
 
         public Proveedor? Proveedor { get; set; }
 
-        [ForeignKey("ItemCarrito")]
-        public ItemCarrito? ItemCarrito { get; set; }
+        public ICollection<ItemCarrito>? ItemsCarrito { get; set; }
 
-        [ForeignKey("DetalleFactura")]
-        public DetalleFactura? DetalleFactura { get; set; }
+        public ICollection<DetalleFactura>? DetallesFactura { get; set; }
 
-        [ForeignKey("Inventario")]
+        public int InventarioId { get; set; }
+
+        [ForeignKey("InventarioId")]
         public Inventario? Inventario { get; set; }
 
     }
