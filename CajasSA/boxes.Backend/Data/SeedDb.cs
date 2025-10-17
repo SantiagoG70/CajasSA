@@ -19,7 +19,7 @@ public class SeedDb
 
     private async Task CheckRolesAsync()
     {
-        if (!_context.Roles.Any())
+        if (!_context.Roles.Any()) // Si no hay roles, los creamos
         {
             _context.Roles.Add(new Rol { Name = "Administrador" });
             _context.Roles.Add(new Rol { Name = "Cliente" });
@@ -27,5 +27,34 @@ public class SeedDb
         }
 
         await _context.SaveChangesAsync();
+    }
+
+    private async Task CheckProductosAsync() {
+        if (!_context.Productos.Any()) { 
+            _context.Productos.Add(new Producto
+            {
+                Name = "Caja Re-armada Pequeña",
+                Quantity = 3000,
+                Price = 100,
+                Weight = 0.02m,
+                Type = "Caja Re-armada",
+                EntryDate = DateTime.Now,
+                Max = 45000,
+                Min = 50
+            });
+            _context.Productos.Add(new Producto
+            {
+                Name = "Caja Re-armada Mediana",
+                Quantity = 2000,
+                Price = 150,
+                Weight = 0.05m,
+                Type = "Caja Re-armada",
+                EntryDate = DateTime.Now,
+                Max = 30000,
+                Min = 30,
+                
+            });
+            await _context.SaveChangesAsync();
+        }
     }
 }

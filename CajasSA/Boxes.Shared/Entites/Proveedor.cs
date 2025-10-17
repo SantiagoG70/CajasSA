@@ -22,7 +22,5 @@ public class Proveedor
     [Required]
     public string Address { get; set; } = null!;
 
-    public Producto ProductType { get; set; } = null!;
-
     public ICollection<Producto>? Productos { get; set; } = null!; // navigation property
 }

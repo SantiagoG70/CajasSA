@@ -119,7 +119,8 @@ namespace Boxes.Backend.Data
             modelBuilder.Entity<Producto>()
                 .HasOne(p => p.Proveedor)
                 .WithMany(pr => pr.Productos)
-                .HasForeignKey(p => p.ProveedorId);
+                .HasForeignKey(p => p.ProveedorId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
