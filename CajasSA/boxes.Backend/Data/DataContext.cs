@@ -11,6 +11,7 @@ namespace Boxes.Backend.Data
 
         // DbSets
         public DbSet<Usuario> Usuarios { get; set; }
+
         public DbSet<Rol> Roles { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Administrador> Administradores { get; set; }
@@ -22,7 +23,7 @@ namespace Boxes.Backend.Data
         public DbSet<Producto> Productos { get; set; }
         public DbSet<Proveedor> Proveedores { get; set; }
         public DbSet<Inventario> Inventarios { get; set; }
-        public DbSet<Alerta> Alertas { get; set; } 
+        public DbSet<Alerta> Alertas { get; set; }
         public DbSet<Reportes> Reportess { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -68,7 +69,8 @@ namespace Boxes.Backend.Data
             modelBuilder.Entity<Factura>()
                 .HasOne(f => f.Cliente)
                 .WithMany(cli => cli.Facturas)
-                .HasForeignKey(f => f.ClienteId);
+                .HasForeignKey(f => f.ClienteId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             // ---- Carrito -> Factura (1:1 composición) ----
             modelBuilder.Entity<Factura>()
