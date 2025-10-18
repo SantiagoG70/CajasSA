@@ -17,4 +17,11 @@
     <ProjectReference Include="..\boxes.Backend\boxes.Backend.csproj" />
     <ProjectReference Include="..\Boxes.Shared\Boxes.Shared.csproj" />
   </ItemGroup>
+
+
+  <ItemGroup>
+    <Content Update="wwwroot\images\question %281%29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>

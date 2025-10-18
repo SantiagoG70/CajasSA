@@ -129,7 +129,7 @@ public partial class ProveedoresIndex
             return;
         }
 
-        var responseHttp = await Repository.DeleteAsync($"{baseUrl}/{proveedor.Id}");
+        var responseHttp = await Repository.DeleteAsync<object>($"{baseUrl}/{proveedor.Id}");
         if (responseHttp.Error)
         {
             if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)

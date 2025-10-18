@@ -1,7 +1,41 @@
-﻿<MudNavMenu>
-    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.HomeWork">Inicio</MudNavLink>
-    <MudNavLink Href="proveedores" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Badge">Proveedores</MudNavLink>
-</MudNavMenu>
+﻿@inherits LayoutComponentBase
+@using MudBlazor
+
+<MudThemeProvider @bind-IsDarkMode="_isDarkMode" />
+
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu"
+                       Color="Color.Inherit"
+                       Edge="Edge.Start"
+                       OnClick="@DrawerToggle" />
+        <MudText Typo="Typo.h5" Class="ml-3">Proveedores</MudText>
+        <MudSpacer />
+        <MudIconButton Icon="@DarkLightModeButtonIcon"
+                       Color="Color.Inherit"
+                       OnClick="@DarkModeToggle" />
+    </MudAppBar>
+
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="1" Variant="DrawerVariant.Mini">
+        <NavMenu /> @* tu menú *@
+    </MudDrawer>
+
+    <MudMainContent Class="p-4">
+        @Body @* ← IMPORTANTE en un layout *@
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    bool _drawerOpen = true;
+    bool _isDarkMode;
+
+    void DrawerToggle() => _drawerOpen = !_drawerOpen;
+    void DarkModeToggle() => _isDarkMode = !_isDarkMode;
+
+    string DarkLightModeButtonIcon =>
+        _isDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode;
+}
+
 
 
 

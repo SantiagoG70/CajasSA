@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
-
 
 namespace Boxes.Frontend.Components.Pages.Shared
 {
@@ -20,6 +18,5 @@ namespace Boxes.Frontend.Components.Pages.Shared
         {
             await ApplyFilter.InvokeAsync(FilterValue);
         }
-
     }
 }
