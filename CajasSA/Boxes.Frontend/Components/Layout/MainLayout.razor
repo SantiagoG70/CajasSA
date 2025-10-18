@@ -17,11 +17,11 @@
     </MudAppBar>
 
     <MudDrawer @bind-Open="_drawerOpen" Elevation="1" Variant="DrawerVariant.Mini">
-        <NavMenu /> @* tu menú *@
+        <NavMenu />
     </MudDrawer>
 
     <MudMainContent Class="p-4">
-        @Body @* ← IMPORTANTE en un layout *@
+        @Body
     </MudMainContent>
 </MudLayout>
 
@@ -35,7 +35,3 @@
     string DarkLightModeButtonIcon =>
         _isDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode;
 }
-
-
-
-
