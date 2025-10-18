@@ -1,4 +1,5 @@
 ﻿using Boxes.Shared.Entites;
+using System.Net;
 
 namespace Boxes.Backend.Data;
 
@@ -22,29 +23,20 @@ public class SeedDb
     {
         if (!_context.Roles.Any()) // Si no hay roles, los creamos
         {
-            var roles = new List<Rol>
-            {
-                new Rol { Name = "Administrador" },
-                new Rol { Name = "Cliente" },
-                new Rol { Name = "Empleado" }
-            };
-            _context.Roles.AddRange(roles);
+            _context.Roles.Add(new Rol { Name = "Administrador" });
+            _context.Roles.Add(new Rol { Name = "Empleado" });
+            _context.Roles.Add(new Rol { Name = "Cliente" });
         }
 
         await _context.SaveChangesAsync();
     }
 
-    public async Task CheckProveedoresAsync() {
+    public async Task CheckProveedoresAsync()
+    {
         if (!_context.Proveedores.Any()) // Si no hay proveedores, los creamos
         {
-            var proveedores = new List<Proveedor>
-            {
-                new Proveedor { Name = "Reciclando Carton", Phone = "123-456-7890", Address = "Calle Falsa 123, Ciudad A", ProductType = "Caja Re-armada" }
-            };
-            _context.Proveedores.AddRange(proveedores);
-        }      
-            await _context.SaveChangesAsync();
+            _context.Proveedores.Add(new Proveedor { Name = "Reciclando Carton", Phone = "123-456-7890", Address = "Calle Falsa 123, Ciudad A", ProductType = "Caja Re-armada" });
+        }
+        await _context.SaveChangesAsync();
     }
-
-    
 }
