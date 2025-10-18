@@ -1,4 +1,5 @@
 ﻿using boxes.Backend.UnitsOfWork.Interfaces;
+using Boxes.Shared.DTOs;
 using Boxes.Shared.Entites;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,6 +26,18 @@ public class ProveedoresController : GenericController<Proveedor>
         }
         return BadRequest();
     }
+
+    [HttpGet("paginated")]
+    public override async Task<IActionResult> GetAsync(PaginationDTO pagination)
+    {
+        var response = await _proveedoresUnitOfWork.GetAsync(pagination);
+        if (response.WasSuccess)
+        {
+            return Ok(response.Result);
+        }
+        return BadRequest();
+    }
+
 
     [HttpGet("{id}")]
     public override async Task<IActionResult> GetAsync(int id)
