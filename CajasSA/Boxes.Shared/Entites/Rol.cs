@@ -1,5 +1,6 @@
 ﻿using Boxes.Shared.Interfaces;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Boxes.Shared.Entites;
 
@@ -12,5 +13,6 @@ public class Rol : IEntityWithName
     [Required(ErrorMessage = "El campo {0} es obligatorio.")]
     public string Name { get; set; } = null!;
 
+    [JsonIgnore]
     public ICollection<Usuario>? Usuarios { get; set; } = null!;
 }

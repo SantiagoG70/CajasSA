@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Boxes.Shared.Entites;
 
@@ -18,10 +19,11 @@ public class Carrito
 
     [ForeignKey("Cliente")]
     public int ClienteId { get; set; }
+
     public Cliente? Cliente { get; set; }
 
+    [JsonIgnore]
     public ICollection<ItemCarrito>? Items { get; set; }
 
-    
     public Factura? Factura { get; set; }
 }

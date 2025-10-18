@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Boxes.Shared.Entites;
 
@@ -25,7 +26,8 @@ public class Proveedor
     [Display(Name = "Tipo de producto")]
     [StringLength(30, MinimumLength = 3, ErrorMessage = "el tipo de producto debe tener entre 3 y 30 caracteres")]
     [Required]
-    public string ProductType { get; set; } = null!; 
+    public string ProductType { get; set; } = null!;
 
-    public ICollection<Producto>? Productos { get; set; } = null!; // navigation property
+    [JsonIgnore]
+    public ICollection<Producto>? Productos { get; set; } = null!;
 }

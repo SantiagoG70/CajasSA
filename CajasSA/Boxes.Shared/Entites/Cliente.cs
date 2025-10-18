@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Boxes.Shared.Entites;
 
@@ -10,10 +11,13 @@ public class Cliente
     [StringLength(100, MinimumLength = 10, ErrorMessage = "La direccion debe tener entre 10 y 100 caracteres")]
     public string Direccion { get; set; } = null!;
 
-    
+    [JsonIgnore]
     public ICollection<Carrito>? Carritos { get; set; } // 1 a N
+
+    [JsonIgnore]
     public ICollection<Factura>? Facturas { get; set; } // 1 a N
 
     public int UsuarioId { get; set; }
+
     public Usuario? Usuario { get; set; }
 }
