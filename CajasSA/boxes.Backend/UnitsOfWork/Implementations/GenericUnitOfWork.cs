@@ -1,5 +1,6 @@
 ﻿using boxes.Backend.Repositories.Interfaces;
 using boxes.Backend.UnitsOfWork.Interfaces;
+using Boxes.Shared.DTOs;
 using Boxes.Shared.Responses;
 
 namespace boxes.Backend.UnitsOfWork.Implementations;
@@ -8,10 +9,14 @@ public class GenericUnitOfWork<T> : IGenericUnitOfWork<T> where T : class
 {
     private readonly IGenericRepository<T> _repository;
 
-    public GenericUnitOfWork(IGenericRepository<T> repository) 
+    public GenericUnitOfWork(IGenericRepository<T> repository)
     {
-        _repository = repository; // Dependency Injection of the repository 
+        _repository = repository; // Dependency Injection of the repository
     }
+
+    public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync(PaginationDTO pagination) => await _repository.GetAsync(pagination);
+
+    public virtual async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination) => await _repository.GetTotalRecordsAsync(pagination);
 
     public virtual async Task<ActionResponse<T>> AddAsync(T model) => await _repository.AddAsync(model);
 

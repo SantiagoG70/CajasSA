@@ -14,6 +14,8 @@ builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=LocalConnec
 builder.Services.AddTransient<SeedDb>();
 builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IProveedoresRepository, ProveedoresRepository>();
+builder.Services.AddScoped<IProveedoresUnitOfWork, ProveedoresUnitOfWork>();
 
 var app = builder.Build();
 SeedData(app);

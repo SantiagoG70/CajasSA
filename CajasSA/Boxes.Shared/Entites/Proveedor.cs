@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Boxes.Shared.Interfaces;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Boxes.Shared.Entites;
 
-public class Proveedor
+public class Proveedor : IEntityWithName
 {
     public int Id { get; set; }
 
