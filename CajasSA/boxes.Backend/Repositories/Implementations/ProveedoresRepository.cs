@@ -1,5 +1,7 @@
-﻿using boxes.Backend.Repositories.Interfaces;
+﻿using boxes.Backend.Helpers;
+using boxes.Backend.Repositories.Interfaces;
 using Boxes.Backend.Data;
+using Boxes.Shared.DTOs;
 using Boxes.Shared.Entites;
 using Boxes.Shared.Responses;
 using Microsoft.EntityFrameworkCore;
@@ -18,12 +20,28 @@ public class ProveedoresRepository : GenericRepository<Proveedor>, IProveedoresR
     public override async Task<ActionResponse<IEnumerable<Proveedor>>> GetAsync()
     {
         var Proveedores = await _context.Proveedores
-            .Include(c => c.Name)
+            .OrderBy(x => x.Name)
             .ToListAsync();
         return new ActionResponse<IEnumerable<Proveedor>>
         {
             WasSuccess = true,
             Result = Proveedores
+        };
+    }
+
+    public override async Task<ActionResponse<IEnumerable<Proveedor>>> GetAsync(PaginationDTO pagination)
+    {
+        var queryable = _context.Proveedores
+            .Include(c => c.Name)
+            .AsQueryable();
+
+        return new ActionResponse<IEnumerable<Proveedor>>
+        {
+            WasSuccess = true,
+            Result = await queryable
+                .OrderBy(x => x.Name)
+                .Paginate(pagination)
+                .ToListAsync()
         };
     }
 
