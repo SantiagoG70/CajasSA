@@ -18,18 +18,23 @@ public class DetalleFactura
 
     [Display(Name = "Subtotal")]
     [Required]
+    [Range(1000000, double.MaxValue, ErrorMessage = "el {0} no puede ser menor a {1} ")]
+    [Column(TypeName = "decimal(18,2)")]
     public decimal Subtotal { get; set; }
+
     [Display(Name = "Total")]
     [Required]
+    [Range(1000000, double.MaxValue, ErrorMessage = "el {0} no puede ser menor a {1} ")]
+    [Column(TypeName = "decimal(18,2)")]
     public decimal Total { get; set; }
 
-   
     [ForeignKey("Factura")]
     public int FacturaId { get; set; }
+
     public Factura? Factura { get; set; }
 
- 
     [ForeignKey("Producto")]
     public int ProductoId { get; set; }
+
     public Producto? Producto { get; set; }
 }

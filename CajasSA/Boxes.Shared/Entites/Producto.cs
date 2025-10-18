@@ -19,10 +19,14 @@ public class Producto
 
     [Display(Name = "Precio del producto")]
     [Required]
+    [Range(1000000, double.MaxValue, ErrorMessage = "el {0} no puede ser menor a {1} ")]
+    [Column(TypeName = "decimal(18,2)")]
     public decimal Price { get; set; }
 
     [Display(Name = "Peso del producto")]
     [Required]
+    [Range(1000000, double.MaxValue, ErrorMessage = "el {0} no puede ser menor a {1} ")]
+    [Column(TypeName = "decimal(18,2)")]
     public decimal Weight { get; set; }
 
     [Display(Name = "Tipo del producto")]
