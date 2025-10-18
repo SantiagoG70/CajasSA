@@ -56,7 +56,7 @@ public class ProveedoresRepository : GenericRepository<Proveedor>, IProveedoresR
             return new ActionResponse<Proveedor>
             {
                 WasSuccess = false,
-                Message = "País no existe"
+                Message = "Proveedor no existe"
             };
         }
 
