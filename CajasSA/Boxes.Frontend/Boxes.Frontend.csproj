@@ -9,18 +9,11 @@
 
   <ItemGroup>
     <PackageReference Include="MudBlazor" Version="8.*" />
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
 
 
   <ItemGroup>
-    <ProjectReference Include="..\boxes.Backend\boxes.Backend.csproj" />
-    <ProjectReference Include="..\Boxes.Shared\Boxes.Shared.csproj" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <Content Update="wwwroot\images\question %281%29.png">
+    <Content Update="wwwroot\images\question.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
