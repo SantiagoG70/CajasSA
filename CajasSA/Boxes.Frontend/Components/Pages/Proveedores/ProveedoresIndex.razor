@@ -1,5 +1,5 @@
 ﻿﻿@using System.Globalization
-@page "/employees"
+@page "/proveedores"
 
 @if (loading)
 {
@@ -7,7 +7,7 @@
 }
 else
 {
-    <MudTable Items="@Employees"
+    <MudTable Items="@Proveedores"
               @ref="table"
               ServerData="LoadListAsync"
               Dense="true"
@@ -35,7 +35,7 @@ else
         </HeaderContent>
 
         <RowTemplate>
-            <MudTd>@context.FirstName @context.LastName</MudTd>
+            <MudTd>@context.Name @context.LastName</MudTd>
             <MudTd>@context.Salary.ToString("C0", new CultureInfo("es-CO"))</MudTd>
             <MudTd>@(context.IsActive ? "Sí" : "No")</MudTd>
             <MudTd>

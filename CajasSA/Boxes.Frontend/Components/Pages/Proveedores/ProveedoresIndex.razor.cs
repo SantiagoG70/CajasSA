@@ -14,7 +14,7 @@ public partial class ProveedoresIndex
     private readonly int[] pageSizeOptions = { 10, 25, 50, int.MaxValue };
     private int totalRecords = 0;
     private bool loading;
-    private const string baseUrl = "api/employees";
+    private const string baseUrl = "api/proveedores";
     private string infoFormat = "{first_item}-{last_item} => {all_items}";
 
     [Inject] private IRepository Repository { get; set; } = null!;
@@ -51,7 +51,7 @@ public partial class ProveedoresIndex
         loading = false;
     }
 
-    private async Task<TableData<Employee>> LoadListAsync(TableState state, CancellationToken cancellationToken)
+    private async Task<TableData<Proveedor>> LoadListAsync(TableState state, CancellationToken cancellationToken)
     {
         int page = state.Page + 1;
         int pageSize = state.PageSize;
@@ -62,18 +62,18 @@ public partial class ProveedoresIndex
             url += $"&filter={Filter}";
         }
 
-        var responseHttp = await Repository.GetAsync<List<Employee>>(url);
+        var responseHttp = await Repository.GetAsync<List<Proveedor>>(url);
         if (responseHttp.Error)
         {
             var message = await responseHttp.GetErrorMessageAsync();
             Snackbar.Add(message!, Severity.Error);
-            return new TableData<Employee> { Items = [], TotalItems = 0 };
+            return new TableData<Proveedor> { Items = [], TotalItems = 0 };
         }
         if (responseHttp.Response == null)
         {
-            return new TableData<Employee> { Items = [], TotalItems = 0 };
+            return new TableData<Proveedor> { Items = [], TotalItems = 0 };
         }
-        return new TableData<Employee>
+        return new TableData<Proveedor>
         {
             Items = responseHttp.Response,
             TotalItems = totalRecords
@@ -100,11 +100,11 @@ public partial class ProveedoresIndex
             var parameters = new DialogParameters
             {
                 { "Id", id }
-            }; dialog = await DialogService.ShowAsync<EmployeeEdit>("Editar Empleado", parameters, options);
+            }; dialog = await DialogService.ShowAsync<ProveedorEdit>("Editar Proveedor", parameters, options);
         }
         else
         {
-            dialog = await DialogService.ShowAsync<EmployeeCreate>("Nuevo empleado", options);
+            dialog = await DialogService.ShowAsync<ProveedorCreate>("Nuevo Proveedor", options);
         }
 
         var result = await dialog.Result;
@@ -115,11 +115,11 @@ public partial class ProveedoresIndex
         }
     }
 
-    private async Task DeleteAsync(Employee employee)
+    private async Task DeleteAsync(Proveedor proveedor)
     {
         var parameters = new DialogParameters
         {
-            { "Message", $"Estas seguro de borrar el empleado: {employee.FirstName}" }
+            { "Message", $"Estas seguro de borrar el Proveedor: {proveedor.Name}" }
         };
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall, CloseOnEscapeKey = true };
         var dialog = await DialogService.ShowAsync<ConfirmDialog>("Confirmación", parameters, options);
@@ -129,12 +129,12 @@ public partial class ProveedoresIndex
             return;
         }
 
-        var responseHttp = await Repository.DeleteAsync($"{baseUrl}/{employee.Id}");
+        var responseHttp = await Repository.DeleteAsync($"{baseUrl}/{proveedor.Id}");
         if (responseHttp.Error)
         {
             if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
             {
-                NavigationManager.NavigateTo("/employees");
+                NavigationManager.NavigateTo("/proveedores");
             }
             else
             {
