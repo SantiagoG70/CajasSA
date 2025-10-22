@@ -1,5 +1,7 @@
 ﻿using System.Net;
 
+using System.Net;
+
 namespace Boxes.Frontend.Repositories;
 
 public class HttpResponseWrapper<T>
