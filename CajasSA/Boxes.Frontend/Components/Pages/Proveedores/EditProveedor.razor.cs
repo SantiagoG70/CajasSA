@@ -17,7 +17,7 @@ namespace Boxes.Frontend.Components.Pages.Proveedores
 
         protected override async Task OnInitializedAsync()
         {
-            var responseHttp = await Repository.GetAsync<Proveedor>($"api/proveedor/{Id}");
+            var responseHttp = await Repository.GetAsync<Proveedor>($"api/proveedores/{Id}");
 
             if (responseHttp.Error)
             {
@@ -40,7 +40,7 @@ namespace Boxes.Frontend.Components.Pages.Proveedores
 
         private async Task EditAsync()
         {
-            var responseHttp = await Repository.PutAsync("api/proveedor", proveedor);
+            var responseHttp = await Repository.PutAsync("api/proveedores", proveedor);
 
             if (responseHttp.Error)
             {

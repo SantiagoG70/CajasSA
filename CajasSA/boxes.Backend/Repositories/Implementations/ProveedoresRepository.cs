@@ -32,7 +32,7 @@ public class ProveedoresRepository : GenericRepository<Proveedor>, IProveedoresR
     public override async Task<ActionResponse<IEnumerable<Proveedor>>> GetAsync(PaginationDTO pagination)
     {
         var queryable = _context.Proveedores
-            .Include(c => c.Name)
+            .Include(c => c.Productos)
             .AsQueryable();
 
         return new ActionResponse<IEnumerable<Proveedor>>
