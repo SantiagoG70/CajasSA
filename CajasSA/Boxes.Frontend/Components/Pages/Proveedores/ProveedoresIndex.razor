@@ -16,7 +16,7 @@ else
               FixedHeader="true"
               FixedFooter="true">
         <ToolBarContent>
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between align-items-center w-100">
                 <MudText Typo="Typo.h6" Class="me-4">Proveedores</MudText>
                 <MudButton Variant="Variant.Outlined"
                            EndIcon="@Icons.Material.Filled.Add"
@@ -28,16 +28,19 @@ else
             <FilterComponent ApplyFilter="SetFilterValue" />
         </ToolBarContent>
         <HeaderContent>
-            <MudTh>Proveedor</MudTh>
-            <MudTh style="width:140px;">Nombre</MudTh>
-            <MudTh style="width:120px;">Telefono</MudTh>
-            <MudTh style="width:270px;">Direccion</MudTh>
-            <MudTh style="width:150px; white-space:nowrap;">Tipo producto</MudTh>
+            <MudTh style="width:180px;">Proveedor</MudTh>
+            <MudTh style="width:140px;">Teléfono</MudTh>
+            <MudTh style="width:270px;">Dirección</MudTh>
+            <MudTh style="width:160px;">Tipo Producto</MudTh>
+            <MudTh style="width:120px; text-align:center;">Acciones</MudTh>
         </HeaderContent>
 
         <RowTemplate>
             <MudTd>@context.Name</MudTd>
-            <MudTd>
+            <MudTd>@context.Phone</MudTd>
+            <MudTd>@context.Address</MudTd>
+            <MudTd>@context.ProductType</MudTd>
+            <MudTd Align="Align.Center">
                 <MudTooltip Text="Editar">
                     <MudButton Variant="Variant.Filled"
                                Color="Color.Warning"
