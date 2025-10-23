@@ -1,34 +1,49 @@
-﻿﻿<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit" @key="Proveedor?.Id">
+﻿<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit" @key="Proveedor?.Id">
     <DataAnnotationsValidator />
-    <MudTextField Label="Proveedor"
+
+    <MudTextField Label="Nombre proveedor"
                   @bind-Value="Proveedor.Name"
                   For="@(() => Proveedor.Name)"
-                  Class="mb-4" />
+                  Class="mb-4"
+                  Required="true" />
 
-    <MudButton Variant="Variant.Outlined"
-               StartIcon="@Icons.Material.Filled.ArrowBack"
-               Color="Color.Info"
-               OnClick="ReturnAction">
-        <MudHidden xs="true">
-            Cancelar
-        </MudHidden>
-    </MudButton>
+    <MudTextField Label="Teléfono"
+                  @bind-Value="Proveedor.Phone"
+                  For="@(() => Proveedor.Phone)"
+                  Class="mb-4"
+                  Required="true"
+                  InputType="InputType.Telephone" />
 
-    <MudButton Variant="Variant.Outlined"
-               StartIcon="@Icons.Material.Filled.ArrowBack"
-               Color="Color.Info"
-               OnClick="ReturnAction">
-        <MudHidden xs="true">
-            Cancelar
-        </MudHidden>
-    </MudButton>
+    <MudTextField Label="Dirección"
+                  @bind-Value="Proveedor.Address"
+                  For="@(() => Proveedor.Address)"
+                  Class="mb-4"
+                  Required="true" />
 
-    <MudButton Variant="Variant.Outlined"
-               StartIcon="@Icons.Material.Filled.Check"
-               Color="Color.Primary"
-               ButtonType="ButtonType.Submit">
-        <MudHidden xs="true">
-            Guardar Cambios
-        </MudHidden>
-    </MudButton>
+ 
+    <MudTextField Label="Tipo de producto"
+                  @bind-Value="Proveedor.ProductType"
+                  For="@(() => Proveedor.ProductType)"
+                  Class="mb-4"
+                  Required="true" />
+
+    <MudStack Row="true" Spacing="2">
+        <MudButton Variant="Variant.Outlined"
+                   StartIcon="@Icons.Material.Filled.ArrowBack"
+                   Color="Color.Info"
+                   OnClick="ReturnAction">
+            <MudHidden xs="true">
+                Cancelar
+            </MudHidden>
+        </MudButton>
+
+        <MudButton Variant="Variant.Filled"
+                   StartIcon="@Icons.Material.Filled.Check"
+                   Color="Color.Primary"
+                   ButtonType="ButtonType.Submit">
+            <MudHidden xs="true">
+                Guardar Cambios
+            </MudHidden>
+        </MudButton>
+    </MudStack>
 </EditForm>
