@@ -1,25 +1,34 @@
 ﻿@inherits LayoutComponentBase
+@using MudBlazor
 
 <MudThemeProvider Theme="@_theme" IsDarkMode="_isDarkMode" />
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
+
 <MudLayout>
-    <MudAppBar Elevation="1">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+    <MudAppBar Elevation="1" Color="Color.Primary">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu"
+                       Color="Color.Inherit" Edge="Edge.Start"
+                       OnClick="@((e) => DrawerToggle())" />
         <MudText Typo="Typo.h5" Class="ml-3">Proveedores</MudText>
         <MudSpacer />
-        <MudIconButton Icon="@(DarkLightModeButtonIcon)" Color="Color.Inherit" OnClick="@DarkModeToggle" />
-        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+        <MudIconButton Icon="@(DarkLightModeButtonIcon)"
+                       Color="Color.Inherit"
+                       OnClick="@DarkModeToggle" />
+        <MudIconButton Icon="@Icons.Material.Filled.MoreVert"
+                       Color="Color.Inherit" Edge="Edge.End" />
     </MudAppBar>
-    <MudDrawer id="nav-drawer" @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+
+    <MudDrawer id="nav-drawer" @bind-Open="_drawerOpen"
+               ClipMode="DrawerClipMode.Always" Elevation="2">
         <NavMenu />
     </MudDrawer>
+
     <MudMainContent Class="pt-16 pa-4">
         @Body
     </MudMainContent>
 </MudLayout>
-
 
 <div id="blazor-error-ui" data-nosnippet>
     An unhandled error has occurred.
@@ -29,73 +38,89 @@
 
 @code {
     private bool _drawerOpen = true;
-    private bool _isDarkMode = true;
+    private bool _isDarkMode = false; // inicia claro
     private MudTheme? _theme = null;
 
     protected override void OnInitialized()
     {
-        base.OnInitialized();
-
         _theme = new()
         {
             PaletteLight = _lightPalette,
             PaletteDark = _darkPalette,
             LayoutProperties = new LayoutProperties()
+            {
+                DefaultBorderRadius = "10px"
+            }
         };
     }
 
-    private void DrawerToggle()
-    {
-        _drawerOpen = !_drawerOpen;
-    }
+    private void DrawerToggle() => _drawerOpen = !_drawerOpen;
 
-    private void DarkModeToggle()
-    {
-        _isDarkMode = !_isDarkMode;
-    }
+    private void DarkModeToggle() => _isDarkMode = !_isDarkMode;
 
+    // -------- Paleta "cartonera" (CLARO) --------
     private readonly PaletteLight _lightPalette = new()
     {
-        Black = "#110e2d",
-        AppbarText = "#424242",
-        AppbarBackground = "rgba(255,255,255,0.8)",
-        DrawerBackground = "#ffffff",
-        GrayLight = "#e8e8e8",
-        GrayLighter = "#f9f9f9",
+        // Colores de marca
+        Primary = "#6D4C41", // marrón
+        Secondary = "#B58B68", // caramelo
+        Tertiary = "#D6CBBE", // beige arena
+
+        // Fondos
+        Background = "#FFFCF6", // casi blanco cálido
+        Surface = "#F3EEE6", // kraft claro
+        DrawerBackground = "#F3EEE6",
+        DrawerText = "#3E2723",
+
+        // AppBar
+        AppbarBackground = "#5D4037",
+        AppbarText = "#FFFFFF",
+
+        // Texto / líneas
+        TextPrimary = "#3E2723",
+        TextSecondary = "#5D4037",
+        Divider = "#E2D8CA",
+        TableLines = "#E9E2D8",
+
+        // Estados
+        Success = "#6BAA75",
+        Warning = "#E0A106",
+        Error = "#C44230",
+        Info = "#7C9CBF",
     };
 
+    // -------- Paleta "cartonera" (OSCURO) --------
     private readonly PaletteDark _darkPalette = new()
     {
-        Primary = "#7e6fff",
-        Surface = "#1e1e2d",
-        Background = "#1a1a27",
-        BackgroundGray = "#151521",
-        AppbarText = "#92929f",
-        AppbarBackground = "rgba(26,26,39,0.8)",
-        DrawerBackground = "#1a1a27",
-        ActionDefault = "#74718e",
-        ActionDisabled = "#9999994d",
-        ActionDisabledBackground = "#605f6d4d",
-        TextPrimary = "#b2b0bf",
-        TextSecondary = "#92929f",
-        TextDisabled = "#ffffff33",
-        DrawerIcon = "#92929f",
-        DrawerText = "#92929f",
-        GrayLight = "#2a2833",
-        GrayLighter = "#1e1e2d",
-        Info = "#4a86ff",
-        Success = "#3dcb6c",
-        Warning = "#ffb545",
-        Error = "#ff3f5f",
-        LinesDefault = "#33323e",
-        TableLines = "#33323e",
-        Divider = "#292838",
-        OverlayLight = "#1e1e2d80",
+        // Colores de marca
+        Primary = "#B58B68", // caramelo
+        Secondary = "#D6CBBE", // beige arena
+        Tertiary = "#F3EEE6", // kraft claro
+
+        // Fondos
+        Background = "#3E2723",
+        Surface = "#5D4037",
+        DrawerBackground = "#5D4037",
+        DrawerText = "#F5F0E6",
+
+        // AppBar
+        AppbarBackground = "#3E2723",
+        AppbarText = "#F5F0E6",
+
+        // Texto / líneas
+        TextPrimary = "#F5F0E6",
+        TextSecondary = "#E6DCCF",
+        Divider = "#5A463D",
+        TableLines = "#5A463D",
+
+        // Estados
+        Success = "#8FCF9B",
+        Warning = "#F3C34F",
+        Error = "#E57368",
+        Info = "#9CB6D6",
     };
 
-    public string DarkLightModeButtonIcon => _isDarkMode switch
-    {
-        true => Icons.Material.Rounded.AutoMode,
-        false => Icons.Material.Outlined.DarkMode,
-    };
+    public string DarkLightModeButtonIcon => _isDarkMode
+        ? Icons.Material.Rounded.AutoMode
+        : Icons.Material.Outlined.DarkMode;
 }
