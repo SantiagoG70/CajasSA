@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Boxes.Shared.Entites;
 using MudBlazor;
+using Boxes.Frontend.Repositories;
 
 namespace Boxes.Frontend.Components.Pages.Proveedores
 {
     public partial class EditProveedor
     {
-        private Employee? employee;
+        private Proveedor? proveedor;
 
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
@@ -16,13 +17,13 @@ namespace Boxes.Frontend.Components.Pages.Proveedores
 
         protected override async Task OnInitializedAsync()
         {
-            var responseHttp = await Repository.GetAsync<Employee>($"api/employees/{Id}");
+            var responseHttp = await Repository.GetAsync<Proveedor>($"api/proveedor/{Id}");
 
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
-                    NavigationManager.NavigateTo("employees");
+                    NavigationManager.NavigateTo("proveedores");
                 }
                 else
                 {
@@ -32,14 +33,14 @@ namespace Boxes.Frontend.Components.Pages.Proveedores
             }
             else
             {
-                employee = responseHttp.Response;
+                proveedor = responseHttp.Response;
                 StateHasChanged();
             }
         }
 
         private async Task EditAsync()
         {
-            var responseHttp = await Repository.PutAsync("api/employees", employee);
+            var responseHttp = await Repository.PutAsync("api/proveedor", proveedor);
 
             if (responseHttp.Error)
             {
@@ -54,7 +55,7 @@ namespace Boxes.Frontend.Components.Pages.Proveedores
 
         private void Return()
         {
-            NavigationManager.NavigateTo("employees");
+            NavigationManager.NavigateTo("proveedores");
         }
     }
 }

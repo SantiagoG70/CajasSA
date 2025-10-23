@@ -1,4 +1,4 @@
-﻿﻿@if (employee is null)
+﻿﻿@if (proveedor is null)
 {
     <Loading />
 }
@@ -6,10 +6,10 @@ else
 {
     <MudDialog>
         <DialogContent>
-            <EmployeeForm Employee="employee"
+            <ProveedorForm Proveedor="proveedor"
                           OnValidSubmit="EditAsync"
                           ReturnAction="Return"
-                          @key="employee.Id" />
+                          @key="proveedor.Id" />
         </DialogContent>
     </MudDialog>
 }
