@@ -48,7 +48,6 @@ public class ProveedoresRepository : GenericRepository<Proveedor>, IProveedoresR
     public override async Task<ActionResponse<Proveedor>> GetAsync(int id)
     {
         var proveedor = await _context.Proveedores
-             .Include(c => c.Phone!)
              .FirstOrDefaultAsync(c => c.Id == id);
 
         if (proveedor == null)

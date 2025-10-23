@@ -87,7 +87,7 @@ public partial class ProveedoresIndex
         await table.ReloadServerData();
     }
 
-    private async Task ShowModalAsync(int id = 0, bool isEdit = false)
+    private async Task ShowModalAsync(int id = 0, bool isEdit = false) //edit
     {
         var options = new DialogOptions
         {
