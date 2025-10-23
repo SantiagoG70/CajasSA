@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Boxes.Shared.Entites;
 using MudBlazor;
+using Boxes.Frontend.Repositories;
 
 namespace Boxes.Frontend.Components.Pages.Proveedores
 {
     public partial class ProveedorCreate
     {
-        private Proveedor employee = new();
+        private Proveedor proveedor = new();
 
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
@@ -14,7 +15,7 @@ namespace Boxes.Frontend.Components.Pages.Proveedores
 
         private async Task CreateAsync()
         {
-            var responseHttp = await Repository.PostAsync("/api/employees", employee);
+            var responseHttp = await Repository.PostAsync("/api/proveedores", proveedor);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -28,7 +29,7 @@ namespace Boxes.Frontend.Components.Pages.Proveedores
 
         private void Return()
         {
-            NavigationManager.NavigateTo("/employees");
+            NavigationManager.NavigateTo("/proveedores");
         }
     }
 }

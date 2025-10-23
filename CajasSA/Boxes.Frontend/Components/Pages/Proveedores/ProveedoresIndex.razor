@@ -35,9 +35,7 @@ else
         </HeaderContent>
 
         <RowTemplate>
-            <MudTd>@context.Name @context.LastName</MudTd>
-            <MudTd>@context.Salary.ToString("C0", new CultureInfo("es-CO"))</MudTd>
-            <MudTd>@(context.IsActive ? "Sí" : "No")</MudTd>
+            <MudTd>@context.Name</MudTd>
             <MudTd>
                 <MudTooltip Text="Editar">
                     <MudButton Variant="Variant.Filled"

@@ -15,7 +15,7 @@ public partial class ProveedoresIndex
     private int totalRecords = 0;
     private bool loading;
     private const string baseUrl = "api/proveedores";
-    private string infoFormat = "{first_item}-{last_item} => {all_items}";
+    private string infoFormat = "{first_item} => {all_items}";
 
     [Inject] private IRepository Repository { get; set; } = null!;
     [Inject] private IDialogService DialogService { get; set; } = null!;
@@ -100,7 +100,7 @@ public partial class ProveedoresIndex
             var parameters = new DialogParameters
             {
                 { "Id", id }
-            }; dialog = await DialogService.ShowAsync<ProveedorEdit>("Editar Proveedor", parameters, options);
+            }; dialog = await DialogService.ShowAsync<EditProveedor>("Editar Proveedor", parameters, options);
         }
         else
         {
