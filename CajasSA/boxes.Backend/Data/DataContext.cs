@@ -1,21 +1,20 @@
 ﻿using Boxes.Shared.Entites;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Boxes.Backend.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<Usuario>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
-        {
+        {     
         }
 
         // DbSets
         public DbSet<Usuario> Usuarios { get; set; }
 
-        public DbSet<Rol> Roles { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
-        public DbSet<Administrador> Administradores { get; set; }
-        public DbSet<Empleado> Empleados { get; set; }
+        
         public DbSet<Carrito> Carritos { get; set; }
         public DbSet<ItemCarrito> ItemsCarrito { get; set; }
         public DbSet<Factura> Facturas { get; set; }
@@ -30,13 +29,11 @@ namespace Boxes.Backend.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Rol>().HasIndex(r => r.Name).IsUnique();
-
             modelBuilder.Entity<Usuario>()
-                .HasOne(u => u.Rol)
-                .WithMany(r => r.Usuarios)
-                .HasForeignKey(u => u.RolId)
-                .OnDelete(DeleteBehavior.Restrict);
+            .HasOne(u => u.Cliente)
+            .WithOne(c => c.Usuario)
+            .HasForeignKey<Cliente>(c => c.UsuarioId)
+            .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Cliente>()
                 .HasOne(c => c.Usuario)
@@ -44,17 +41,6 @@ namespace Boxes.Backend.Data
                 .HasForeignKey<Cliente>(c => c.UsuarioId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Administrador>()
-                .HasOne(a => a.Usuario)
-                .WithOne(u => u.Administrador)
-                .HasForeignKey<Administrador>(a => a.UsuarioId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Empleado>()
-                .HasOne(e => e.Usuario)
-                .WithOne(u => u.Empleado)
-                .HasForeignKey<Empleado>(e => e.UsuarioId)
-                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Carrito>()
                 .HasOne(c => c.Cliente)

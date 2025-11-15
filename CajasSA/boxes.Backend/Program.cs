@@ -3,6 +3,8 @@ using boxes.Backend.Repositories.Interfaces;
 using boxes.Backend.UnitsOfWork.Implementations;
 using boxes.Backend.UnitsOfWork.Interfaces;
 using Boxes.Backend.Data;
+using Boxes.Shared.Entites;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -17,6 +19,21 @@ builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWor
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IProveedoresRepository, ProveedoresRepository>();
 builder.Services.AddScoped<IProveedoresUnitOfWork, ProveedoresUnitOfWork>();
+builder.Services.AddScoped<IUsuariosRepository, UsuariosRepository>();
+builder.Services.AddScoped<IUsuariosUnitOfWork, UsuariosUnitOfWork>();
+
+builder.Services.AddIdentity<Usuario, IdentityRole>(x =>
+{
+    x.User.RequireUniqueEmail = true;
+    x.Password.RequireDigit = false;
+    x.Password.RequiredUniqueChars = 0;
+    x.Password.RequireLowercase = false;
+    x.Password.RequireNonAlphanumeric = false;
+    x.Password.RequireUppercase = false;
+})
+    .AddEntityFrameworkStores<DataContext>()
+    .AddDefaultTokenProviders();
+
 
 var app = builder.Build();
 SeedData(app);

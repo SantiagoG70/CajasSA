@@ -1,4 +1,5 @@
-﻿using Boxes.Shared.Entites;
+﻿using boxes.Backend.UnitsOfWork.Interfaces;
+using Boxes.Shared.Entites;
 using Microsoft.AspNetCore.Mvc;
 
 namespace boxes.Backend.Controllers
@@ -8,5 +9,8 @@ namespace boxes.Backend.Controllers
     public class CarritosController : GenericController<Carrito>
     {
         //Falta unidad de trabajo 
+        public CarritosController(IGenericUnitOfWork<Carrito> unitOfWork) : base(unitOfWork)
+        {
+        }
     }
 }

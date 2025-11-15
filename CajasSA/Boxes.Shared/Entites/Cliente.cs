@@ -17,7 +17,7 @@ public class Cliente
     [JsonIgnore]
     public ICollection<Factura>? Facturas { get; set; } // 1 a N
 
-    public int UsuarioId { get; set; }
+    public string? UsuarioId { get; set; }
 
     public Usuario? Usuario { get; set; }
 }
