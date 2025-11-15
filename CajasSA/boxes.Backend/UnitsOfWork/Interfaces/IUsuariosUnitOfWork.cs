@@ -1,4 +1,5 @@
-﻿using Boxes.Shared.Entites;
+﻿using Boxes.Shared.DTOs;
+using Boxes.Shared.Entites;
 using Microsoft.AspNetCore.Identity;
 
 namespace boxes.Backend.UnitsOfWork.Interfaces
@@ -15,5 +16,9 @@ namespace boxes.Backend.UnitsOfWork.Interfaces
 
         Task<bool> IsUsuarioInRoleAsync(Usuario user, string roleName);
 
-    } 
+        Task<SignInResult> LoginAsync(LoginDTO model);
+
+        Task LogoutAsync();
+
+    }
 } 

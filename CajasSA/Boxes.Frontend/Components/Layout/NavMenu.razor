@@ -6,6 +6,11 @@
         <Authorized>
             <MudNavLink Href="proveedores" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person2">Proveedores</MudNavLink> 
         </Authorized>
+        
     </AuthorizeView>
+    <MudNavLink Href="/login" Icon="@Icons.Material.Filled.Login">Iniciar Sesión</MudNavLink>
+    <MudNavLink Href="/register" Icon="@Icons.Material.Filled.PersonAdd">Registrarse</MudNavLink>
+    <MudNavLink Href="/logout" Icon="@Icons.Material.Filled.Logout">Cerrar Sesión</MudNavLink>
     @*para emplear en el front los roles se debe poner [Authorize(Roles = "Admin")] por ejemplo en la pagina que queremos usar Rol*@
+    @* falta hacer que se vean o no las opciones segun el rol del usuario logueado y terminar bien las interfaces de login y registro *@
 </MudNavMenu>   

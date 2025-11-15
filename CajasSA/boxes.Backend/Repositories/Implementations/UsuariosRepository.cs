@@ -1,5 +1,6 @@
 ﻿using boxes.Backend.Repositories.Interfaces;
 using Boxes.Backend.Data;
+using Boxes.Shared.DTOs;
 using Boxes.Shared.Entites;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,12 +12,14 @@ namespace boxes.Backend.Repositories.Implementations
         private readonly DataContext _context;
         private readonly UserManager<Usuario> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly SignInManager<Usuario> _signInManager;
 
-        public UsuariosRepository(DataContext context, UserManager<Usuario> userManager, RoleManager<IdentityRole> roleManager)
+        public UsuariosRepository(DataContext context, UserManager<Usuario> userManager, RoleManager<IdentityRole> roleManager , SignInManager<Usuario> signInManager)
         {
             _context = context;
             _userManager = userManager;
-            _roleManager = roleManager; 
+            _roleManager = roleManager;
+            _signInManager = signInManager;
         }
 
         public async Task<IdentityResult> AddUsuarioAsync(Usuario user, string password)
@@ -55,6 +58,16 @@ namespace boxes.Backend.Repositories.Implementations
         public async Task<bool> IsUsuarioInRoleAsync(Usuario user, string roleName)
         {
             return await _userManager.IsInRoleAsync(user, roleName);
+        }
+
+        public async Task<SignInResult> LoginAsync(LoginDTO model)
+        {
+            return await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
+        }
+
+        public async Task LogoutAsync()
+        {
+            await _signInManager.SignOutAsync();
         }
 
     }
