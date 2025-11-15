@@ -2,4 +2,14 @@
 @page "/"
 
 <PageTitle>Proveedores</PageTitle>
-<MudText Typo="Typo.h3" GutterBottom="true">Bienvenido Administrador</MudText>
+<MudText Typo="Typo.h3" GutterBottom="true">Bienvenido</MudText>
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <p>Estas autenticado y autorizado, @context.User.Identity?.Name</p>
+    </Authorized>
+    <NotAuthorized>
+        <p>No estas autorizado</p>
+    </NotAuthorized>
+
+</AuthorizeView>
+

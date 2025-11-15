@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Boxes.Frontend.Repositories;
 using Boxes.Shared.Entites;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using Boxes.Frontend.Repositories;
 
 namespace Boxes.Frontend.Components.Pages.Proveedores
 {
+    [Authorize(Roles = "Admin")]
     public partial class ProveedorCreate
     {
         private Proveedor proveedor = new();

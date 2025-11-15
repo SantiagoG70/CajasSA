@@ -1,12 +1,14 @@
-using Microsoft.AspNetCore.Components;
-using MudBlazor;
 using Boxes.Frontend.Components.Pages.Shared;
 using Boxes.Frontend.Repositories;
 using Boxes.Shared.Entites;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using System.Net;
 
 namespace Boxes.Frontend.Components.Pages.Proveedores;
 
+[Authorize(Roles = "Admin")]
 public partial class ProveedoresIndex
 {
     private List<Proveedor>? Proveedores { get; set; }

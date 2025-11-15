@@ -2,9 +2,11 @@
 using Boxes.Shared.Entites;
 using MudBlazor;
 using Boxes.Frontend.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Boxes.Frontend.Components.Pages.Proveedores
 {
+    [Authorize(Roles = "Admin")]
     public partial class EditProveedor
     {
         private Proveedor? proveedor;
