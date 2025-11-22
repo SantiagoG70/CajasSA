@@ -8,11 +8,6 @@ public class Inventario
 
     public string Name { get; set; } = null!;
 
-    public int Stock { get; set; }
-
     [JsonIgnore]
     public ICollection<Producto>? Productos { get; set; } = new List<Producto>();
-
-    [JsonIgnore]
-    public ICollection<Alerta>? Alertas { get; set; } = null!;
 }

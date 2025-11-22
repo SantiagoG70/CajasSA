@@ -1,3 +1,4 @@
+using boxes.Backend.Helpers;
 using boxes.Backend.Repositories.Implementations;
 using boxes.Backend.Repositories.Interfaces;
 using boxes.Backend.UnitsOfWork.Implementations;
@@ -7,6 +8,7 @@ using Boxes.Shared.Entites;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -47,15 +49,28 @@ builder.Services.AddSwaggerGen(c =>
           }
         });
 });
+builder.Environment.WebRootPath = Path.Combine(builder.Environment.ContentRootPath, "Images");
+
 
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=LocalConnection"));
 builder.Services.AddTransient<SeedDb>();
+builder.Services.AddScoped<IFileStorage, FileStorage>(); //helper
+builder.Services.AddScoped<IOrdenesHelper, OrdenesHelper>(); //helper
 builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IProveedoresRepository, ProveedoresRepository>();
 builder.Services.AddScoped<IProveedoresUnitOfWork, ProveedoresUnitOfWork>();
 builder.Services.AddScoped<IUsuariosRepository, UsuariosRepository>();
 builder.Services.AddScoped<IUsuariosUnitOfWork, UsuariosUnitOfWork>();
+builder.Services.AddScoped<IProductosRepository, ProductosRepository>();
+builder.Services.AddScoped<IProductosUnitOfWork, ProductosUnitOfWork>();
+builder.Services.AddScoped<ICategoriasRepository, CategoriasRepository>();
+builder.Services.AddScoped<ICategoriasUnitOfWork, CategoriasUnitOfWork>();
+builder.Services.AddScoped<IOrdenesTemporalesRepository, OrdenesTemporalesRepository>();
+builder.Services.AddScoped<IOrdenesTemporalesUnitOfWork, OrdenesTemporalesUnitOfWork>();
+builder.Services.AddScoped<IOrdenesUnitOfWork, OrdenesUnitOfWork>();
+builder.Services.AddScoped<IOrdenesRepository, OrdenesRepository>();
+
 
 builder.Services.AddIdentity<Usuario, IdentityRole>(x =>
 {
@@ -81,9 +96,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 
+
 var app = builder.Build();
 SeedData(app);
 
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(builder.Environment.ContentRootPath, "Images")),
+    RequestPath = "/Images"
+});
 void SeedData(WebApplication app)
 {
     var scopedFactory = app.Services.GetService<IServiceScopeFactory>();

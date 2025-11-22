@@ -17,27 +17,23 @@ public class Producto
     [Required]
     public int Quantity { get; set; }
 
-    [Display(Name = "Precio del producto")]
-    [Required]
-    [Range(1000000, double.MaxValue, ErrorMessage = "el {0} no puede ser menor a {1} ")]
     [Column(TypeName = "decimal(18,2)")]
+    [DisplayFormat(DataFormatString = "{0:C2}")]
+    [Display(Name = "Precio")]
+    [Required(ErrorMessage = "El campo {0} es obligatorio.")]
     public decimal Price { get; set; }
 
-    [Display(Name = "Peso del producto")]
-    [Required]
-    [Range(1000000, double.MaxValue, ErrorMessage = "el {0} no puede ser menor a {1} ")]
-    [Column(TypeName = "decimal(18,2)")]
-    public decimal Weight { get; set; }
+
+    [DataType(DataType.MultilineText)]
+    [Display(Name = "Descripción")]
+    [MaxLength(500, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
+    public string Description { get; set; } = null!;
+
 
     [Display(Name = "Tipo del producto")]
     [StringLength(30, MinimumLength = 3)]
     [Required]
     public string Type { get; set; } = null!;
-
-    [Display(Name = "Fecha de ingreso")]
-    [DataType(DataType.Date)]
-    [Required]
-    public DateTime EntryDate { get; set; }
 
     [Display(Name = "Stock Máximo")]
     [Required]
@@ -58,8 +54,25 @@ public class Producto
     [JsonIgnore]
     public ICollection<DetalleFactura>? DetallesFactura { get; set; }
 
-    public int InventarioId { get; set; }
-
     [ForeignKey("InventarioId")]
-    public Inventario? Inventario { get; set; }
+    public int? InventarioId { get; set; }
+    public Inventario? Inventario { get; set; } // Relación uno a uno
+
+    public ICollection<ProductCategory>? ProductCategories { get; set; }
+
+    [Display(Name = "Categorías")]
+    public int ProductCategoriesNumber => ProductCategories == null || ProductCategories.Count == 0 ? 0 : ProductCategories.Count;
+
+
+    public ICollection<ProductImage>? ProductImages { get; set; }
+     
+    [Display(Name = "Imágenes")]
+    public int ProductImagesNumber => ProductImages == null || ProductImages.Count == 0 ? 0 : ProductImages.Count;
+
+    [Display(Name = "Imagén")]
+    public string MainImage => ProductImages == null || ProductImages.Count == 0 ? string.Empty : ProductImages.FirstOrDefault()!.Image;
+
+    public ICollection<OrdenTemporal>? TemporalOrders { get; set; }
+
+    public ICollection<DetalleOrden>? OrderDetails { get; set; }
 }

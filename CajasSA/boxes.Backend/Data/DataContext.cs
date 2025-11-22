@@ -24,10 +24,21 @@ namespace Boxes.Backend.Data
         public DbSet<Inventario> Inventarios { get; set; }
         public DbSet<Alerta> Alertas { get; set; }
         public DbSet<Reportes> Reportess { get; set; }
+        public DbSet<Orden> Ordenes { get; set; }
+        public DbSet<DetalleOrden> DetalleOrdenes { get; set; } 
+        public DbSet<OrdenTemporal> OrdenesTemporales { get; set; }
+        public DbSet<Categoria> Categorias { get; set; }
+        public DbSet<ProductCategory> CategoriasProductos { get; set; } 
+        public DbSet<ProductImage> ProductImages { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Categoria>()
+                .HasIndex(x => x.Name)
+                .IsUnique();
 
             modelBuilder.Entity<Usuario>()
             .HasOne(u => u.Cliente)
@@ -62,7 +73,8 @@ namespace Boxes.Backend.Data
             modelBuilder.Entity<ItemCarrito>()
                 .HasOne(ic => ic.Carrito)
                 .WithMany(c => c.Items)
-                .HasForeignKey(ic => ic.CarritoId);
+                .HasForeignKey(ic => ic.CarritoId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ItemCarrito>()
                 .HasOne(ic => ic.Producto)
@@ -74,26 +86,33 @@ namespace Boxes.Backend.Data
                 .WithMany(f => f.Detalles)
                 .HasForeignKey(df => df.FacturaId);
 
+
             modelBuilder.Entity<DetalleFactura>()
                 .HasOne(df => df.Producto)
                 .WithMany(p => p.DetallesFactura)
                 .HasForeignKey(df => df.ProductoId);
 
             modelBuilder.Entity<Producto>()
+                .HasIndex(p => p.Name)
+                .IsUnique();
+
+            modelBuilder.Entity<Producto>()
                 .HasOne(p => p.Inventario)
                 .WithMany(i => i.Productos)
-                .HasForeignKey(p => p.InventarioId);
-
-            modelBuilder.Entity<Alerta>()
-                .HasOne(a => a.Inventario)
-                .WithMany(i => i.Alertas)
-                .HasForeignKey(a => a.InventarioId);
+                .HasForeignKey(p => p.InventarioId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Producto>()
                 .HasOne(p => p.Proveedor)
                 .WithMany(pr => pr.Productos)
                 .HasForeignKey(p => p.ProveedorId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+
+            modelBuilder.Entity<Alerta>()
+                .HasOne(a => a.Inventario); //falta relacion con producto
+                
+
         }
     }
 }

@@ -74,6 +74,27 @@ namespace boxes.Backend.Migrations
                     b.ToTable("Carritos");
                 });
 
+            modelBuilder.Entity("Boxes.Shared.Entites.Categoria", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Categorias");
+                });
+
             modelBuilder.Entity("Boxes.Shared.Entites.Cliente", b =>
                 {
                     b.Property<int>("Id")
@@ -175,9 +196,6 @@ namespace boxes.Backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Stock")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Inventarios");
@@ -194,19 +212,14 @@ namespace boxes.Backend.Migrations
                     b.Property<int>("CarritoId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
                     b.Property<int>("ProductoId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<double>("UnitPrice")
-                        .HasColumnType("float");
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -217,6 +230,83 @@ namespace boxes.Backend.Migrations
                     b.ToTable("ItemsCarrito");
                 });
 
+            modelBuilder.Entity("Boxes.Shared.Entites.OrdenTemporal", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Quantity")
+                        .HasColumnType("real");
+
+                    b.Property<string>("Remarks")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("OrdenesTemporales");
+                });
+
+            modelBuilder.Entity("Boxes.Shared.Entites.ProductCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("ProductoId");
+
+                    b.ToTable("CategoriasProductos");
+                });
+
+            modelBuilder.Entity("Boxes.Shared.Entites.ProductImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductoId");
+
+                    b.ToTable("ProductImages");
+                });
+
             modelBuilder.Entity("Boxes.Shared.Entites.Producto", b =>
                 {
                     b.Property<int>("Id")
@@ -225,10 +315,12 @@ namespace boxes.Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("EntryDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
-                    b.Property<int>("InventarioId")
+                    b.Property<int?>("InventarioId")
                         .HasColumnType("int");
 
                     b.Property<int>("Max")
@@ -256,12 +348,12 @@ namespace boxes.Backend.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<decimal>("Weight")
-                        .HasColumnType("decimal(18,2)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("InventarioId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.HasIndex("ProveedorId");
 
@@ -547,7 +639,7 @@ namespace boxes.Backend.Migrations
             modelBuilder.Entity("Boxes.Shared.Entites.Alerta", b =>
                 {
                     b.HasOne("Boxes.Shared.Entites.Inventario", "Inventario")
-                        .WithMany("Alertas")
+                        .WithMany()
                         .HasForeignKey("InventarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -633,13 +725,57 @@ namespace boxes.Backend.Migrations
                     b.Navigation("Producto");
                 });
 
+            modelBuilder.Entity("Boxes.Shared.Entites.OrdenTemporal", b =>
+                {
+                    b.HasOne("Boxes.Shared.Entites.Producto", "Product")
+                        .WithMany("TemporalOrders")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Boxes.Shared.Entites.Usuario", "User")
+                        .WithMany("TemporalOrders")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Boxes.Shared.Entites.ProductCategory", b =>
+                {
+                    b.HasOne("Boxes.Shared.Entites.Categoria", "Category")
+                        .WithMany("ProductCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Boxes.Shared.Entites.Producto", "Producto")
+                        .WithMany("ProductCategories")
+                        .HasForeignKey("ProductoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Producto");
+                });
+
+            modelBuilder.Entity("Boxes.Shared.Entites.ProductImage", b =>
+                {
+                    b.HasOne("Boxes.Shared.Entites.Producto", "Producto")
+                        .WithMany("ProductImages")
+                        .HasForeignKey("ProductoId");
+
+                    b.Navigation("Producto");
+                });
+
             modelBuilder.Entity("Boxes.Shared.Entites.Producto", b =>
                 {
                     b.HasOne("Boxes.Shared.Entites.Inventario", "Inventario")
                         .WithMany("Productos")
                         .HasForeignKey("InventarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Boxes.Shared.Entites.Proveedor", "Proveedor")
                         .WithMany("Productos")
@@ -710,6 +846,11 @@ namespace boxes.Backend.Migrations
                     b.Navigation("Items");
                 });
 
+            modelBuilder.Entity("Boxes.Shared.Entites.Categoria", b =>
+                {
+                    b.Navigation("ProductCategories");
+                });
+
             modelBuilder.Entity("Boxes.Shared.Entites.Cliente", b =>
                 {
                     b.Navigation("Carritos");
@@ -724,8 +865,6 @@ namespace boxes.Backend.Migrations
 
             modelBuilder.Entity("Boxes.Shared.Entites.Inventario", b =>
                 {
-                    b.Navigation("Alertas");
-
                     b.Navigation("Productos");
                 });
 
@@ -734,6 +873,12 @@ namespace boxes.Backend.Migrations
                     b.Navigation("DetallesFactura");
 
                     b.Navigation("ItemsCarrito");
+
+                    b.Navigation("ProductCategories");
+
+                    b.Navigation("ProductImages");
+
+                    b.Navigation("TemporalOrders");
                 });
 
             modelBuilder.Entity("Boxes.Shared.Entites.Proveedor", b =>
@@ -744,6 +889,8 @@ namespace boxes.Backend.Migrations
             modelBuilder.Entity("Boxes.Shared.Entites.Usuario", b =>
                 {
                     b.Navigation("Cliente");
+
+                    b.Navigation("TemporalOrders");
                 });
 #pragma warning restore 612, 618
         }

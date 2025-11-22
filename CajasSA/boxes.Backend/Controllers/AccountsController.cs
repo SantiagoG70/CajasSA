@@ -59,7 +59,7 @@ namespace boxes.Backend.Controllers
                 new("Name", user.Name),
                 new("LastName", user.LastName),
                 new("Address", user.Address),
-                new("CityId", user.Cliente.Id.ToString()) //puede ser nullo ya que falta implementar todo clientes
+                /*new("CityId", user.Cliente.Id.ToString())*/ //puede ser nullo ya que falta implementar todo clientes
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["jwtKey"]!));

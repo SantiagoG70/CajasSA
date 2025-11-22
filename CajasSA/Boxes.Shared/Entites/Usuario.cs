@@ -36,7 +36,10 @@ public class Usuario : IdentityUser
     [Display(Name = "Usuario")]
     public string FullName => $"{Name} {LastName}";
 
+    public ICollection<OrdenTemporal>? TemporalOrders { get; set; }
 
     public virtual Cliente? Cliente { get; set; }
-  
+
+    public ICollection<Orden>? Orders { get; set; }
+
 }
