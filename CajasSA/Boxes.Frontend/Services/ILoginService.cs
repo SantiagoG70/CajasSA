@@ -1,10 +1,8 @@
-﻿namespace Boxes.Frontend.Services
+﻿namespace Boxes.Frontend.Services;
+
+public interface ILoginService
 {
-    public interface ILoginService
-    {
-        Task LoginAsync(string token);
+    Task LoginAsync(string token);
 
-        Task LogoutAsync();
-
-    }
+    Task LogoutAsync();
 }

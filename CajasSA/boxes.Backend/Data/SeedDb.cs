@@ -14,11 +14,10 @@ public class SeedDb
     private readonly IUsuariosUnitOfWork _usersUnitOfWork;
     private readonly IFileStorage _fileStorage;
 
-
-    public SeedDb(DataContext context , IUsuariosUnitOfWork usuariosUnitOfWork, IFileStorage fileStorage)
+    public SeedDb(DataContext context, IUsuariosUnitOfWork usuariosUnitOfWork, IFileStorage fileStorage)
     {
         _context = context;
-        _usersUnitOfWork = usuariosUnitOfWork;  
+        _usersUnitOfWork = usuariosUnitOfWork;
         _fileStorage = fileStorage;
     }
 
@@ -30,8 +29,9 @@ public class SeedDb
         await CheckCategoriesAsync();
         await CheckProductosAsync();
         await CheckUserAsync("1010", "Tomas", "Arias", "tomasariasuribe302@gmail.com", "316 582 6289", "La isla", UserType.Admin);
-
+        await CheckUserAsync("1000413924", "Santiago", "Gaviria", "Cosita@exaple.com", "300 233 7562", "El radual", UserType.Admin);
     }
+
     private async Task CheckRolesAsync()
     {
         await _usersUnitOfWork.CheckRoleAsync(UserType.Admin.ToString());
@@ -39,14 +39,14 @@ public class SeedDb
         await _usersUnitOfWork.CheckRoleAsync(UserType.Empleado.ToString());
     }
 
-    private async Task<Usuario> CheckUserAsync(string document, string name, string lastName, string email, string phone, string address, UserType userType)
+    private async Task<Usuario> CheckUserAsync(string document, string firstName, string lastName, string email, string phone, string address, UserType userType)
     {
-        var user = await _usersUnitOfWork.GetUsuarioAsync(email);
-        if (user == null)
+        var usuario = await _usersUnitOfWork.GetUsuarioAsync(email);
+        if (usuario == null)
         {
-            user = new Usuario
+            usuario = new Usuario
             {
-                Name = name,
+                FirstName = firstName,
                 LastName = lastName,
                 Email = email,
                 UserName = email,
@@ -56,11 +56,11 @@ public class SeedDb
                 UserType = userType,
             };
 
-            await _usersUnitOfWork.AddUsuarioAsync(user, "123456");
-            await _usersUnitOfWork.AddUsuarioToRoleAsync(user, userType.ToString());
+            await _usersUnitOfWork.AddUsuarioAsync(usuario, "123456");
+            await _usersUnitOfWork.AddUsuarioToRoleAsync(usuario, userType.ToString());
         }
 
-        return user;
+        return usuario;
     }
 
     private async Task CheckCategoriesAsync()
@@ -74,16 +74,17 @@ public class SeedDb
         }
     }
 
-
-    private async Task CheckProductosAsync() {
-        if (!_context.Productos.Any()) {
-            await AddProductosAsync("Caja re-armada", 50 , 1000 ,"carton re armado" , 100 , 1 ,new List<string>() {"Re-armadas" } ,new List<string>() { "CAJA-REGULAR-PEQUENA.png"});
-            await AddProductosAsync("Caja reciclada", 50 , 1000 ,"carton reciclado" , 200 , 1 ,new List<string>() {"Recicladas" } ,new List<string>() { "CAJA-REGULAR-PEQUENA.png"});
+    private async Task CheckProductosAsync()
+    {
+        if (!_context.Productos.Any())
+        {
+            await AddProductosAsync("Caja re-armada", 50, 1000, "carton re armado", 100, 1, new List<string>() { "Re-armadas" }, new List<string>() { "CAJA-REGULAR-PEQUENA.png" });
+            await AddProductosAsync("Caja reciclada", 50, 1000, "carton reciclado", 200, 1, new List<string>() { "Recicladas" }, new List<string>() { "CAJA-REGULAR-PEQUENA.png" });
             await _context.SaveChangesAsync();
         }
     }
 
-    private async Task AddProductosAsync(string name, int quantity, decimal price, string type, int max , int min ,List<string> categories,List<string> images)
+    private async Task AddProductosAsync(string name, int quantity, decimal price, string type, int max, int min, List<string> categories, List<string> images)
     {
         Producto producto = new()
         {
@@ -107,7 +108,6 @@ public class SeedDb
                 producto.ProductCategories.Add(new ProductCategory { Category = category });
             }
         }
-
 
         foreach (string? image in images)
         {

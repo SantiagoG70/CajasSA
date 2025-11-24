@@ -1,6 +1,8 @@
 ﻿using boxes.Backend.UnitsOfWork.Interfaces;
 using Boxes.Shared.DTOs;
 using Boxes.Shared.Entites;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace boxes.Backend.Controllers
@@ -11,7 +13,7 @@ namespace boxes.Backend.Controllers
     {
         private readonly IOrdenesTemporalesUnitOfWork _ordenesTemporalesUnitOfWork;
 
-        public OrdenesTemporalesController(IGenericUnitOfWork<OrdenTemporal> unitOfWork , IOrdenesTemporalesUnitOfWork ordenesTemporalesUnitOfWork) :base(unitOfWork)
+        public OrdenesTemporalesController(IGenericUnitOfWork<OrdenTemporal> unitOfWork, IOrdenesTemporalesUnitOfWork ordenesTemporalesUnitOfWork) : base(unitOfWork)
         {
             _ordenesTemporalesUnitOfWork = ordenesTemporalesUnitOfWork;
         }

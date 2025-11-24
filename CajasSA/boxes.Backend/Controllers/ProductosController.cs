@@ -2,6 +2,7 @@
 using boxes.Backend.UnitsOfWork.Interfaces;
 using Boxes.Shared.DTOs;
 using Boxes.Shared.Entites;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,10 +13,12 @@ namespace boxes.Backend.Controllers
     public class ProductosController : GenericController<Producto>
     {
         private readonly IProductosUnitOfWork _unitOfWork;
-        public ProductosController(IGenericUnitOfWork<Producto> unitOfWork , IProductosUnitOfWork productosUnitOfWork) : base(unitOfWork)
+
+        public ProductosController(IGenericUnitOfWork<Producto> unitOfWork, IProductosUnitOfWork productosUnitOfWork) : base(unitOfWork)
         {
             _unitOfWork = productosUnitOfWork;
         }
+
         [HttpGet("paginated")]
         [AllowAnonymous]
         public override async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
@@ -30,7 +33,7 @@ namespace boxes.Backend.Controllers
 
         [HttpGet("totalPages")]
         [AllowAnonymous]
-        public  async Task<IActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
+        public async Task<IActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
         {
             var action = await _unitOfWork.GetTotalPagesAsync(pagination);
             if (action.WasSuccess)
@@ -85,7 +88,6 @@ namespace boxes.Backend.Controllers
             return BadRequest(action.Message);
         }
 
-
         [HttpPut("full")]
         public async Task<IActionResult> PutFullAsync(ProductoDTO productDTO)
         {
@@ -107,6 +109,5 @@ namespace boxes.Backend.Controllers
             }
             return NoContent();
         }
-
     }
 }

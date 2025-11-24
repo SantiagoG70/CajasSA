@@ -2,6 +2,8 @@
 using boxes.Backend.UnitsOfWork.Interfaces;
 using Boxes.Shared.DTOs;
 using Boxes.Shared.Entites;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace boxes.Backend.Controllers
@@ -13,11 +15,12 @@ namespace boxes.Backend.Controllers
         private readonly IOrdenesHelper _ordersHelper;
         private readonly IOrdenesUnitOfWork _ordersUnitOfWork;
 
-        public OrdenesController(IOrdenesHelper ordersHelper , IOrdenesUnitOfWork ordenesUnitOfWork)
+        public OrdenesController(IOrdenesHelper ordersHelper, IOrdenesUnitOfWork ordenesUnitOfWork)
         {
             _ordersHelper = ordersHelper;
             _ordersUnitOfWork = ordenesUnitOfWork;
         }
+
         [HttpGet]
         public async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
         {
@@ -39,7 +42,6 @@ namespace boxes.Backend.Controllers
             }
             return NotFound(response.Message);
         }
-
 
         [HttpGet("totalPages")]
         public async Task<IActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)

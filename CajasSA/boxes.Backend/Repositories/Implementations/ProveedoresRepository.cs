@@ -29,6 +29,13 @@ public class ProveedoresRepository : GenericRepository<Proveedor>, IProveedoresR
         };
     }
 
+    public async Task<IEnumerable<Proveedor>> GetComboAsync()
+    {
+        return await _context.Proveedores
+            .OrderBy(c => c.Name)
+            .ToListAsync();
+    }
+
     public override async Task<ActionResponse<IEnumerable<Proveedor>>> GetAsync(PaginationDTO pagination)
     {
         var queryable = _context.Proveedores

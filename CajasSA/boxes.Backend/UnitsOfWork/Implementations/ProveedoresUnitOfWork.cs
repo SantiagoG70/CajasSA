@@ -3,6 +3,7 @@ using boxes.Backend.UnitsOfWork.Interfaces;
 using Boxes.Shared.DTOs;
 using Boxes.Shared.Entites;
 using Boxes.Shared.Responses;
+using System.Diagnostics.Metrics;
 
 namespace boxes.Backend.UnitsOfWork.Implementations;
 
@@ -14,6 +15,8 @@ public class ProveedoresUnitOfWork : GenericUnitOfWork<Proveedor>, IProveedoresU
     {
         _proveedoresRepository = proveedoresRepository;
     }
+
+    public async Task<IEnumerable<Proveedor>> GetComboAsync() => await _proveedoresRepository.GetComboAsync();
 
     public override async Task<ActionResponse<IEnumerable<Proveedor>>> GetAsync(PaginationDTO pagination) => await _proveedoresRepository.GetAsync(pagination);
 

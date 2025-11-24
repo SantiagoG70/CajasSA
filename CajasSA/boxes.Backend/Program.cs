@@ -4,6 +4,7 @@ using boxes.Backend.Repositories.Interfaces;
 using boxes.Backend.UnitsOfWork.Implementations;
 using boxes.Backend.UnitsOfWork.Interfaces;
 using Boxes.Backend.Data;
+using Boxes.Backend.UnitsOfWork.Implementations;
 using Boxes.Shared.Entites;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -18,9 +19,53 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddEndpointsApiExplorer();
+builder.Environment.WebRootPath = Path.Combine(builder.Environment.ContentRootPath, "Images");
+
+builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=LocalConnection"));
+builder.Services.AddTransient<SeedDb>();
+builder.Services.AddScoped<IFileStorage, FileStorage>(); //helper
+builder.Services.AddScoped<IOrdenesHelper, OrdenesHelper>(); //helper
+builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IProveedoresRepository, ProveedoresRepository>();
+builder.Services.AddScoped<IProveedoresUnitOfWork, ProveedoresUnitOfWork>();
+builder.Services.AddScoped<IUsuariosRepository, UsuariosRepository>();
+builder.Services.AddScoped<IUsuariosUnitOfWork, UsuariosUnitOfWork>();
+builder.Services.AddScoped<IProductosRepository, ProductosRepository>();
+builder.Services.AddScoped<IProductosUnitOfWork, ProductosUnitOfWork>();
+builder.Services.AddScoped<ICategoriasRepository, CategoriasRepository>();
+builder.Services.AddScoped<ICategoriasUnitOfWork, CategoriasUnitOfWork>();
+builder.Services.AddScoped<IOrdenesTemporalesRepository, OrdenesTemporalesRepository>();
+builder.Services.AddScoped<IOrdenesTemporalesUnitOfWork, OrdenesTemporalesUnitOfWork>();
+builder.Services.AddScoped<IOrdenesUnitOfWork, OrdenesUnitOfWork>();
+builder.Services.AddScoped<IOrdenesRepository, OrdenesRepository>();
+
+builder.Services.AddIdentity<Usuario, IdentityRole>(x =>
+{
+    x.User.RequireUniqueEmail = true;
+    x.Password.RequireDigit = false;
+    x.Password.RequiredUniqueChars = 0;
+    x.Password.RequireLowercase = false;
+    x.Password.RequireNonAlphanumeric = false;
+    x.Password.RequireUppercase = false;
+})
+    .AddEntityFrameworkStores<DataContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(x => x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["jwtKey"]!)),
+        ClockSkew = TimeSpan.Zero
+    });
+
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "CajasSA Backend", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Orders Backend", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = @"JWT Authorization header using the Bearer scheme. <br /> <br />
@@ -49,53 +94,6 @@ builder.Services.AddSwaggerGen(c =>
           }
         });
 });
-builder.Environment.WebRootPath = Path.Combine(builder.Environment.ContentRootPath, "Images");
-
-
-builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=LocalConnection"));
-builder.Services.AddTransient<SeedDb>();
-builder.Services.AddScoped<IFileStorage, FileStorage>(); //helper
-builder.Services.AddScoped<IOrdenesHelper, OrdenesHelper>(); //helper
-builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-builder.Services.AddScoped<IProveedoresRepository, ProveedoresRepository>();
-builder.Services.AddScoped<IProveedoresUnitOfWork, ProveedoresUnitOfWork>();
-builder.Services.AddScoped<IUsuariosRepository, UsuariosRepository>();
-builder.Services.AddScoped<IUsuariosUnitOfWork, UsuariosUnitOfWork>();
-builder.Services.AddScoped<IProductosRepository, ProductosRepository>();
-builder.Services.AddScoped<IProductosUnitOfWork, ProductosUnitOfWork>();
-builder.Services.AddScoped<ICategoriasRepository, CategoriasRepository>();
-builder.Services.AddScoped<ICategoriasUnitOfWork, CategoriasUnitOfWork>();
-builder.Services.AddScoped<IOrdenesTemporalesRepository, OrdenesTemporalesRepository>();
-builder.Services.AddScoped<IOrdenesTemporalesUnitOfWork, OrdenesTemporalesUnitOfWork>();
-builder.Services.AddScoped<IOrdenesUnitOfWork, OrdenesUnitOfWork>();
-builder.Services.AddScoped<IOrdenesRepository, OrdenesRepository>();
-
-
-builder.Services.AddIdentity<Usuario, IdentityRole>(x =>
-{
-    x.User.RequireUniqueEmail = true;
-    x.Password.RequireDigit = false;
-    x.Password.RequiredUniqueChars = 0;
-    x.Password.RequireLowercase = false;
-    x.Password.RequireNonAlphanumeric = false;
-    x.Password.RequireUppercase = false;
-})
-    .AddEntityFrameworkStores<DataContext>()
-    .AddDefaultTokenProviders();
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(x => x.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = false,
-        ValidateAudience = false,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["jwtKey"]!)),
-        ClockSkew = TimeSpan.Zero
-    });
-
-
 
 var app = builder.Build();
 SeedData(app);

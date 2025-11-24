@@ -2,23 +2,21 @@
 using Boxes.Shared.Entites;
 using Microsoft.AspNetCore.Identity;
 
-namespace boxes.Backend.UnitsOfWork.Interfaces
+namespace boxes.Backend.UnitsOfWork.Interfaces;
+
+public interface IUsuariosUnitOfWork
 {
-    public interface IUsuariosUnitOfWork
-    {
-        Task<Usuario> GetUsuarioAsync(string email); 
+    Task<SignInResult> LoginAsync(LoginDTO model);
 
-        Task<IdentityResult> AddUsuarioAsync(Usuario user, string password);
+    Task LogoutAsync();
 
-        Task CheckRoleAsync(string roleName);
+    Task<Usuario> GetUsuarioAsync(string email);
 
-        Task AddUsuarioToRoleAsync(Usuario user, string roleName);
+    Task<IdentityResult> AddUsuarioAsync(Usuario usuario, string password);
 
-        Task<bool> IsUsuarioInRoleAsync(Usuario user, string roleName);
+    Task CheckRoleAsync(string roleName);
 
-        Task<SignInResult> LoginAsync(LoginDTO model);
+    Task AddUsuarioToRoleAsync(Usuario usuario, string roleName);
 
-        Task LogoutAsync();
-
-    }
-} 
+    Task<bool> IsUsuarioInRoleAsync(Usuario usuario, string roleName);
+}

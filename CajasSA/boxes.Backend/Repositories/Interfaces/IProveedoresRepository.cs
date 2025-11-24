@@ -6,6 +6,8 @@ namespace boxes.Backend.Repositories.Interfaces;
 
 public interface IProveedoresRepository
 {
+    Task<IEnumerable<Proveedor>> GetComboAsync();
+
     Task<ActionResponse<IEnumerable<Proveedor>>> GetAsync(PaginationDTO pagination);
 
     Task<ActionResponse<Proveedor>> GetAsync(int id);

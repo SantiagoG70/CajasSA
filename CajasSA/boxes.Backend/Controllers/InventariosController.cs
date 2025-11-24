@@ -1,5 +1,7 @@
 ﻿using boxes.Backend.UnitsOfWork.Interfaces;
 using Boxes.Shared.Entites;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace boxes.Backend.Controllers

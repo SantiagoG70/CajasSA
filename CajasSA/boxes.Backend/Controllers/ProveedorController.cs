@@ -1,7 +1,6 @@
 ﻿using boxes.Backend.UnitsOfWork.Interfaces;
 using Boxes.Shared.DTOs;
 using Boxes.Shared.Entites;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +8,6 @@ namespace boxes.Backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] // para los tokens
 public class ProveedoresController : GenericController<Proveedor>
 {
     private readonly IProveedoresUnitOfWork _proveedoresUnitOfWork;
@@ -40,7 +38,6 @@ public class ProveedoresController : GenericController<Proveedor>
         }
         return BadRequest();
     }
-
 
     [HttpGet("{id}")]
     public override async Task<IActionResult> GetAsync(int id)
