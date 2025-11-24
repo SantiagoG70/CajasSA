@@ -1,4 +1,6 @@
-﻿using Boxes.Frontend.Repositories;
+﻿using Blazored.Modal.Services;
+using Boxes.Frontend.Components.Pages.Auth;
+using Boxes.Frontend.Repositories;
 using Boxes.Shared.DTOs;
 using Boxes.Shared.Entites;
 using CurrieTechnologies.Razor.SweetAlert2;
@@ -20,6 +22,7 @@ namespace Boxes.Frontend.Components.Pages.Productos
         [Inject] private SweetAlertService sweetAlertService { get; set; } = null!;
         [Parameter] public int ProductId { get; set; }
         [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; } = null!;
+        [CascadingParameter] private IModalService Modal { get; set; } = default!;
         public OrdenTemporalDTO TemporalOrderDTO { get; set; } = new();
 
         protected override async Task OnParametersSetAsync()
@@ -61,6 +64,7 @@ namespace Boxes.Frontend.Components.Pages.Productos
         {
             if (!isAuthenticated)
             {
+                Modal.Show<Login>();
                 navigationManager.NavigateTo("/Login");
                 var toast1 = sweetAlertService.Mixin(new SweetAlertOptions
                 {
@@ -93,6 +97,5 @@ namespace Boxes.Frontend.Components.Pages.Productos
             await toast2.FireAsync(icon: SweetAlertIcon.Success, message: "Producto agregado al carro de compras.");
             navigationManager.NavigateTo("/");
         }
-
     }
 }

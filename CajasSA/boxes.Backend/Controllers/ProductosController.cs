@@ -105,6 +105,10 @@ namespace boxes.Backend.Controllers
             var action = await _unitOfWork.DeleteAsync(id);
             if (!action.WasSuccess)
             {
+                if (action.Message!.Contains("registros relacionados"))
+                {
+                    return BadRequest(action.Message);
+                }
                 return NotFound();
             }
             return NoContent();

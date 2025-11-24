@@ -123,7 +123,7 @@ namespace Boxes.Frontend.Components.Pages.Productos
                 return;
             }
 
-            var responseHttp = await Repository.DeleteAsync($"api/productos/{productId}");
+            var responseHttp = await Repository.DeleteAsync($"api/Productos/{productId}");
 
             if (responseHttp.Error)
             {

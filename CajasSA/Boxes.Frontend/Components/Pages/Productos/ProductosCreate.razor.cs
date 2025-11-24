@@ -2,10 +2,12 @@
 using Boxes.Shared.DTOs;
 using Boxes.Shared.Entites;
 using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 
 namespace Boxes.Frontend.Components.Pages.Productos
 {
+    [Authorize(Roles = "Admin")]
     public partial class ProductosCreate
     {
         private ProductoDTO productDTO = new()
