@@ -82,7 +82,7 @@ namespace Boxes.Frontend.Components.Pages.Cart
                 return;
             }
 
-            var responseHttp = await Repository.DeleteAsync($"api/OrdenTemporal/{temporalOrderId}");
+            var responseHttp = await Repository.DeleteAsync($"api/OrdenesTemporales/{temporalOrderId}");
 
             if (responseHttp.Error)
             {
