@@ -30,6 +30,7 @@ public class SeedDb
         await CheckProductosAsync();
         await CheckUserAsync("1010", "Tomas", "Arias", "tomasariasuribe302@gmail.com", "316 582 6289", "La isla", UserType.Admin);
         await CheckUserAsync("1000413924", "Santiago", "Gaviria", "Cosita@exaple.com", "300 233 7562", "El radual", UserType.Admin);
+        await CheckUserAsync("2020", "juan","perez","casa@gmail.com", "300 233 7563" ,"Luna lunera la 33", UserType.Cliente);
     }
 
     private async Task CheckRolesAsync()
