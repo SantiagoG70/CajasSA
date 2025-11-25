@@ -1,8 +1,8 @@
-﻿﻿
-@page "/"
+﻿@page "/"
 
 <PageTitle>CajasSA</PageTitle>
 <MudText Typo="Typo.h3" GutterBottom="true">Bienvenido</MudText>
+
 <AuthorizeView Roles="Admin">
     <Authorized>
         <p>Estas autenticado y autorizado, @context.User.Identity?.Name</p>
@@ -10,10 +10,7 @@
     <NotAuthorized>
         <p>No estas autorizado</p>
     </NotAuthorized>
-
 </AuthorizeView>
-
-
 
 @if (Products is null)
 {
@@ -23,7 +20,7 @@ else
 {
     if (Categories != null)
     {
-        <div class="d-flex flex-wrap justify-content-center  mb-4 mt-2">
+        <div class="d-flex flex-wrap justify-content-center mb-4 mt-2">
             @foreach (var category in Categories)
             {
                 <a class="btn btn-link" style="cursor: pointer" @onclick=@(() => LoadAsync(1, category.Name))>@category.Name</a>
@@ -32,22 +29,22 @@ else
         </div>
     }
 
-
-
     <div class="d-flex align-items-center justify-content-between">
         <Filter PlaceHolder="Buscar producto..." Callback=@FilterCallBack />
         <AuthorizeView>
             <Authorized>
                 @if (counter > 0)
                 {
-                    <a href="/Cart/ShowCart" class="btn btn-primary"><i class="bi bi-cart-fill" /> Ver Carro de Compras (@counter)</a>
+                    <a href="/Cart/ShowCart" class="btn btn-primary">
+                        <i class="bi bi-cart-fill" /> Ver Carro de Compras (@counter)
+                    </a>
                 }
             </Authorized>
         </AuthorizeView>
     </div>
-    if (Products.Count > 0)
-    {
 
+    @if (Products != null && Products.Count > 0)
+    {
         <Pagination CurrentPage="currentPage"
                     TotalPages="totalPages"
                     SelectedPage="SelectedPageAsync"
@@ -63,19 +60,22 @@ else
                             <img src="@product.MainImage" style="height:150px; max-width:200px;" class="text-center" alt=@product.Name />
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title text-navy"> @product.Name</h5>
+                            <h5 class="card-title text-navy">@product.Name</h5>
                             <p class="card-text smfnt">@product.Description</p>
                             <h5 class="text-muted">@($"{product.Price:C2}")</h5>
                         </div>
                         <div class="card-footer text-center">
-                            <a href="/productos/details/@product.Id" class="btn btn-sm btn-secondary"><i class="bi bi-info-circle" /> Detalles</a>
-                            <button class="btn btn-sm btn-primary" @onclick=@(() => AddToCartAsync(product.Id))><i class="bi bi-cart-plus" /> Agregar al Carro</button>
+                            <a href="/productos/details/@product.Id" class="btn btn-sm btn-secondary">
+                                <i class="bi bi-info-circle" /> Detalles
+                            </a>
+                            <button class="btn btn-sm btn-primary" @onclick=@(() => AddToCartAsync(product.Id))>
+                                <i class="bi bi-cart-plus" /> Agregar al Carro
+                            </button>
                         </div>
                     </div>
                 </div>
             }
         </div>
-
     }
     else
     {
@@ -84,7 +84,3 @@ else
         </div>
     }
 }
-
-
-
-

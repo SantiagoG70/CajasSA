@@ -6,10 +6,11 @@ using Boxes.Shared.Entites;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using MudBlazor;
 
 namespace Boxes.Frontend.Components.Pages
 {
-    public partial  class Home
+    public partial class Home
     {
         private int currentPage = 1;
         private int totalPages;
@@ -17,13 +18,13 @@ namespace Boxes.Frontend.Components.Pages
         private bool isAuthenticated;
         private string allCategories = "all_categories_list";
 
-
         public List<Producto>? Products { get; set; }
         public List<Categoria>? Categories { get; set; }
         public string CategoryFilter { get; set; } = string.Empty;
 
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
+        [Inject] private ISnackbar Snackbar { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
@@ -31,8 +32,7 @@ namespace Boxes.Frontend.Components.Pages
         [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; } = null!;
         [CascadingParameter] private IModalService Modal { get; set; } = default!;
 
-
-        protected async override Task OnParametersSetAsync()
+        protected override async Task OnParametersSetAsync()
         {
             await CheckIsAuthenticatedAsync();
             await LoadCounterAsync();
@@ -50,7 +50,6 @@ namespace Boxes.Frontend.Components.Pages
 
             Categories = responseHttp.Response;
         }
-
 
         private async Task CheckIsAuthenticatedAsync()
         {
@@ -78,14 +77,7 @@ namespace Boxes.Frontend.Components.Pages
             if (!isAuthenticated)
             {
                 Modal.Show<Login>();
-                var toast1 = SweetAlertService.Mixin(new SweetAlertOptions
-                {
-                    Toast = true,
-                    Position = SweetAlertPosition.BottomEnd,
-                    ShowConfirmButton = false,
-                    Timer = 3000
-                });
-                await toast1.FireAsync(icon: SweetAlertIcon.Error, message: "Debes haber iniciado sesión para poder agregar productos al carro de compras.");
+                Snackbar.Add("Debes haber iniciado sesión para poder agregar productos al carro de compras.", Severity.Error);
                 return;
             }
 
@@ -98,23 +90,14 @@ namespace Boxes.Frontend.Components.Pages
             if (httpActionResponse.Error)
             {
                 var message = await httpActionResponse.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                Snackbar.Add($"Error: {message}", Severity.Error);
                 return;
             }
 
             await LoadCounterAsync();
 
-            var toast2 = SweetAlertService.Mixin(new SweetAlertOptions
-            {
-                Toast = true,
-                Position = SweetAlertPosition.BottomEnd,
-                ShowConfirmButton = true,
-                Timer = 3000
-            });
-            await toast2.FireAsync(icon: SweetAlertIcon.Success, message: "Producto agregado al carro de compras.");
+            Snackbar.Add("Producto agregado al carro de compras.", Severity.Success);
         }
-
-
 
         protected override async Task OnInitializedAsync()
         {
@@ -142,7 +125,7 @@ namespace Boxes.Frontend.Components.Pages
             await LoadAsync(page);
         }
 
-        private async Task LoadAsync(int page = 1, string category="")
+        private async Task LoadAsync(int page = 1, string category = "")
         {
             if (!string.IsNullOrWhiteSpace(category))
             {
@@ -154,9 +137,8 @@ namespace Boxes.Frontend.Components.Pages
                 {
                     CategoryFilter = category;
                 }
-
             }
-                if (!string.IsNullOrWhiteSpace(Page))
+            if (!string.IsNullOrWhiteSpace(Page))
             {
                 page = Convert.ToInt32(Page);
             }
@@ -211,8 +193,6 @@ namespace Boxes.Frontend.Components.Pages
             {
                 url += $"&CategoryFilter={CategoryFilter}";
             }
-
-
 
             var response = await Repository.GetAsync<int>(url);
             if (response.Error)
