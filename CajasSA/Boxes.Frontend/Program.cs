@@ -1,6 +1,7 @@
 using Blazored.Modal;
 using Boxes.Frontend.AuthenticationProviders;
 using Boxes.Frontend.Components;
+using Boxes.Frontend.Helpers;
 using Boxes.Frontend.Repositories;
 using Boxes.Frontend.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
@@ -17,6 +18,7 @@ builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationProviderJWT>();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthenticationProviderJWT>(x => x.GetRequiredService<AuthenticationProviderJWT>());
 builder.Services.AddScoped<ILoginService, AuthenticationProviderJWT>(x => x.GetRequiredService<AuthenticationProviderJWT>());
+builder.Services.AddScoped<IConfirmDialogService, ConfirmDialogService>();
 builder.Services.AddBlazoredModal();
 builder.Services.AddSweetAlert2(options => { });
 

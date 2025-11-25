@@ -1,14 +1,14 @@
 ﻿<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation"></NavigationLock>
 
-<EditForm EditContext="editContext" OnValidSubmit="OnDataAnnotationsValidatedAsync">
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
 
     <div class="card">
         <div class="card-header">
             <span>
                 <i class="bi bi-box2" /> Crear Nuevo Producto
-                <a class="btn btn-sm btn-success float-end" href="/productos"><i class="bi bi-arrow-left" /> Regresar</a>
-                <button class="btn btn-sm btn-primary float-end mx-2" type="submit"><i class="bi bi-floppy" />  Guardar Cambios</button>
+                <a class="btn btn-sm btn-success float-end" href="/productos"><i class="bi bi-arrow-left" @onclick="ReturnAction"/> Regresar</a>
+                <button class="btn btn-sm btn-primary float-end mx-2" type="submit" ><i class="bi bi-floppy"/> Guardar Cambios</button>
             </span>
         </div>
         <div class="card-body">

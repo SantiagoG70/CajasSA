@@ -4,6 +4,7 @@ using Boxes.Shared.Entites;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace Boxes.Frontend.Components.Pages.Productos
 {
@@ -25,6 +26,7 @@ namespace Boxes.Frontend.Components.Pages.Productos
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
+        [Inject] private ISnackbar Snackbar { get; set; } = null!;
 
         protected override async Task OnInitializedAsync()
         {
@@ -49,7 +51,7 @@ namespace Boxes.Frontend.Components.Pages.Productos
             if (httpActionResponse.Error)
             {
                 var message = await httpActionResponse.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                Snackbar.Add($"ERROR: {message}", Severity.Error);
                 return;
             }
 
@@ -82,7 +84,7 @@ namespace Boxes.Frontend.Components.Pages.Productos
             if (httpActionResponse.Error)
             {
                 var message = await httpActionResponse.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                Snackbar.Add($"ERROR: {message}", Severity.Error);
                 return;
             }
 
@@ -107,7 +109,7 @@ namespace Boxes.Frontend.Components.Pages.Productos
             {
                 loading = false;
                 var message = await httpActionResponse.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                Snackbar.Add($"ERROR: { message}", Severity.Error);
                 return;
             }
 
@@ -124,6 +126,7 @@ namespace Boxes.Frontend.Components.Pages.Productos
                 Id = product.Id,
                 Name = product.Name,
                 Price = product.Price,
+                Type = product.Type,
                 Quantity = product.Quantity,
                 ProductCategoryIds = product.ProductCategories!.Select(x => x.CategoryId).ToList(),
                 ProductImages = product.ProductImages!.Select(x => x.Image).ToList()
@@ -139,7 +142,7 @@ namespace Boxes.Frontend.Components.Pages.Productos
             {
                 loading = false;
                 var message = await httpActionResponse.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                Snackbar.Add($"ERROR: { message}", Severity.Error);
                 return;
             }
 
@@ -165,7 +168,7 @@ namespace Boxes.Frontend.Components.Pages.Productos
             if (httpActionResponse.Error)
             {
                 var message = await httpActionResponse.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                Snackbar.Add($"ERROR: {message}", Severity.Error);
                 return;
             }
 

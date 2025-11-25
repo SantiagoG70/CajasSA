@@ -2,6 +2,7 @@
 using Boxes.Shared.Entites;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace Boxes.Frontend.Components.Pages.Productos
 {
@@ -13,6 +14,7 @@ namespace Boxes.Frontend.Components.Pages.Productos
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
+        [Inject] private ISnackbar Snackbar { get; set; } = null!;  
 
         public List<Producto>? Products { get; set; }
 
@@ -81,7 +83,7 @@ namespace Boxes.Frontend.Components.Pages.Productos
             if (response.Error)
             {
                 var message = await response.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                Snackbar.Add($"ERROR: {message}", Severity.Error);
                 return false;
             }
             Products = response.Response;
@@ -101,7 +103,7 @@ namespace Boxes.Frontend.Components.Pages.Productos
             if (response.Error)
             {
                 var message = await response.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                Snackbar.Add($"ERROR: {message}", Severity.Error);
                 return;
             }
             totalPages = response.Response;
@@ -109,20 +111,7 @@ namespace Boxes.Frontend.Components.Pages.Productos
 
         private async Task Delete(int productId)
         {
-            var result = await SweetAlertService.FireAsync(new SweetAlertOptions
-            {
-                Title = "Confirmación",
-                Text = "¿Esta seguro que quieres borrar el registro?",
-                Icon = SweetAlertIcon.Question,
-                ShowCancelButton = true
-            });
-            var confirm = string.IsNullOrEmpty(result.Value);
-
-            if (confirm)
-            {
-                return;
-            }
-
+           
             var responseHttp = await Repository.DeleteAsync($"api/Productos/{productId}");
 
             if (responseHttp.Error)
@@ -134,9 +123,10 @@ namespace Boxes.Frontend.Components.Pages.Productos
                 }
 
                 var mensajeError = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+                Snackbar.Add($"ERROR: {mensajeError}", Severity.Error);
                 return;
             }
+            Snackbar.Add("Registro eliminado", Severity.Success);
 
             await LoadAsync(1);
         }

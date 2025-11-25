@@ -17,6 +17,7 @@ namespace Boxes.Frontend.Components.Pages.Productos
         private List<MultipleSelectorModel> nonSelected { get; set; } = new();
 
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
+        [Inject] private IConfirmDialogService confirmDialogService { get; set; } = null!;
         [Parameter, EditorRequired] public ProductoDTO ProductDTO { get; set; } = null!;
         [Parameter, EditorRequired] public EventCallback OnValidSubmit { get; set; }
         [Parameter, EditorRequired] public EventCallback ReturnAction { get; set; }
@@ -67,17 +68,8 @@ namespace Boxes.Frontend.Components.Pages.Productos
                 return;
             }
 
-            var result = await SweetAlertService.FireAsync(new SweetAlertOptions
-            {
-                Title = "Confirmación",
-                Text = "¿Deseas abandonar la página y perder los cambios?",
-                Icon = SweetAlertIcon.Warning,
-                ShowCancelButton = true
-            });
-
-            var confirm = !string.IsNullOrEmpty(result.Value);
-
-            if (confirm)
+            var confirmResult = await confirmDialogService.ShowConfirmationAsync("Confirmacion","Hay cambios sin guardar. ¿Desea salir de todas formas?");
+            if (confirmResult)
             {
                 return;
             }
