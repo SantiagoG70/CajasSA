@@ -1,9 +1,11 @@
-﻿using Boxes.Frontend.Repositories;
+﻿using Boxes.Frontend.Helpers;
+using Boxes.Frontend.Repositories;
 using Boxes.Shared.DTOs;
 using Boxes.Shared.Entites;
 using Boxes.Shared.Enums;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using System.Net;
 
 namespace Boxes.Frontend.Components.Pages.Cart
@@ -12,6 +14,8 @@ namespace Boxes.Frontend.Components.Pages.Cart
     {
         private Orden? order;
 
+        [Inject] private ISnackbar Snackbar { get; set; } = null!;
+        [Inject] private IConfirmDialogService confirmDialogService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
@@ -61,16 +65,8 @@ namespace Boxes.Frontend.Components.Pages.Cart
 
         private async Task ModifyTemporalOrder(string message, OrdenStatus status)
         {
-            var result = await SweetAlertService.FireAsync(new SweetAlertOptions
-            {
-                Title = "Confirmación",
-                Text = $"¿Esta seguro que quieres {message} el pedido?",
-                Icon = SweetAlertIcon.Question,
-                ShowCancelButton = true
-            });
-
-            var confirm = string.IsNullOrEmpty(result.Value);
-            if (confirm)
+            var confirmResult = await confirmDialogService.ShowConfirmationAsync("Confirmacion", "Hay cambios sin guardar. ¿Desea salir de todas formas?");
+            if (!confirmResult)
             {
                 return;
             }

@@ -1,9 +1,11 @@
-﻿using Boxes.Frontend.Repositories;
+﻿using Boxes.Frontend.Helpers;
+using Boxes.Frontend.Repositories;
 using Boxes.Shared.DTOs;
 using Boxes.Shared.Entites;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using MudBlazor;
 
 namespace Boxes.Frontend.Components.Pages.Cart
 {
@@ -13,16 +15,19 @@ namespace Boxes.Frontend.Components.Pages.Cart
         private float sumQuantity;
         private decimal sumValue;
 
+        [Inject] private ISnackbar Snackbar { get; set; } = null!;
         [Inject] private IJSRuntime JS { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private InvoiceService InvoiceService { get; set; } = null!;
+        [Inject] private IConfirmDialogService confirmDialogService { get; set; } = null!;
 
         public OrdenDTO OrdenDTO { get; set; } = new();
 
         protected override async Task OnInitializedAsync()
         {
+            await LoadAsync();
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -61,16 +66,8 @@ namespace Boxes.Frontend.Components.Pages.Cart
 
         private async Task ConfirmOrderAsync()
         {
-            var result = await SweetAlertService.FireAsync(new SweetAlertOptions
-            {
-                Title = "Confirmación",
-                Text = "¿Esta seguro que quieres confirmar el pedido?",
-                Icon = SweetAlertIcon.Question,
-                ShowCancelButton = true
-            });
-
-            var confirm = string.IsNullOrEmpty(result.Value);
-            if (confirm)
+            var confirmResult = await confirmDialogService.ShowConfirmationAsync("Confirmacion", "¿Desea confirmar la orden?");
+            if (!confirmResult)
             {
                 return;
             }
@@ -79,7 +76,7 @@ namespace Boxes.Frontend.Components.Pages.Cart
             if (httpActionResponse.Error)
             {
                 var message = await httpActionResponse.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                Snackbar.Add($"ERROR : {message}", Severity.Error);
                 return;
             }
 
@@ -88,17 +85,8 @@ namespace Boxes.Frontend.Components.Pages.Cart
 
         private async Task Delete(int temporalOrderId)
         {
-            var result = await SweetAlertService.FireAsync(new SweetAlertOptions
-            {
-                Title = "Confirmación",
-                Text = "¿Esta seguro que quieres borrar el registro?",
-                Icon = SweetAlertIcon.Question,
-                ShowCancelButton = true
-            });
-
-            var confirm = string.IsNullOrEmpty(result.Value);
-
-            if (confirm)
+            var confirmResult = await confirmDialogService.ShowConfirmationAsync("Confirmacion", "Hay cambios sin guardar. ¿Desea salir de todas formas?");
+            if (!confirmResult)
             {
                 return;
             }
@@ -114,19 +102,13 @@ namespace Boxes.Frontend.Components.Pages.Cart
                 }
 
                 var mensajeError = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+                Snackbar.Add($"ERROR: {mensajeError}", Severity.Error);
                 return;
             }
 
             await LoadAsync();
-            var toast = SweetAlertService.Mixin(new SweetAlertOptions
-            {
-                Toast = true,
-                Position = SweetAlertPosition.BottomEnd,
-                ShowConfirmButton = false,
-                Timer = 3000
-            });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Producto eliminado del carro de compras.");
+            var messageSuccess = "Registro eliminado";
+            Snackbar.Add(messageSuccess, Severity.Success);
         }
 
         private async Task GenerateInvoiceAsync()

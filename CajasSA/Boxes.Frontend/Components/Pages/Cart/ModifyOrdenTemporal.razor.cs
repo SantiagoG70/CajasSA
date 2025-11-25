@@ -3,6 +3,7 @@ using Boxes.Shared.DTOs;
 using Boxes.Shared.Entites;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace Boxes.Frontend.Components.Pages.Cart
 {
@@ -14,6 +15,7 @@ namespace Boxes.Frontend.Components.Pages.Cart
         private Producto? product;
         private OrdenTemporalDTO? temporalOrderDTO;
 
+        [Inject] private ISnackbar Snackbar { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
@@ -33,7 +35,7 @@ namespace Boxes.Frontend.Components.Pages.Cart
             {
                 loading = false;
                 var message = await httpResponse.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                Snackbar.Add(message!, Severity.Error);
                 return;
             }
 
@@ -57,18 +59,11 @@ namespace Boxes.Frontend.Components.Pages.Cart
             if (httpResponse.Error)
             {
                 var message = await httpResponse.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                Snackbar.Add(message!, Severity.Error);
                 return;
             }
 
-            var toast2 = SweetAlertService.Mixin(new SweetAlertOptions
-            {
-                Toast = true,
-                Position = SweetAlertPosition.BottomEnd,
-                ShowConfirmButton = true,
-                Timer = 3000
-            });
-            await toast2.FireAsync(icon: SweetAlertIcon.Success, message: "Producto modificado en el de compras.");
+            Snackbar.Add("El producto se ha actualizado correctamente en el carrito.", Severity.Success);
             NavigationManager.NavigateTo("/");
         }
 
