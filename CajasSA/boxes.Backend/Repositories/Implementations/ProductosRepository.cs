@@ -147,6 +147,7 @@ namespace boxes.Backend.Repositories.Implementations
                     Description = productDTO.Description,
                     Price = productDTO.Price,
                     Quantity = productDTO.Quantity,
+                    Type = productDTO.Type,
                     ProductCategories = new List<ProductCategory>(),
                     ProductImages = new List<ProductImage>()
                 };
@@ -213,6 +214,7 @@ namespace boxes.Backend.Repositories.Implementations
                 product.Name = productDTO.Name;
                 product.Description = productDTO.Description;
                 product.Price = productDTO.Price;
+                product.Type = productDTO.Type;
                 product.Quantity = productDTO.Quantity;
 
                 _context.CategoriasProductos.RemoveRange(product.ProductCategories!);

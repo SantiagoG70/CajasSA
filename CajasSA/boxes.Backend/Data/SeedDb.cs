@@ -97,7 +97,12 @@ public class SeedDb
             Min = min,
             ProductCategories = new List<ProductCategory>(),
             ProductImages = new List<ProductImage>(),
-            ProveedorId = _context.Proveedores.First().Id
+            ProveedorId = _context.Proveedores.First().Id,
+            InventarioId = null,
+            DetallesFactura = null,
+            OrderDetails = null,
+            ItemsCarrito = null,
+            TemporalOrders = null
         };
 
         foreach (var categoryName in categories)
