@@ -4,6 +4,7 @@ using Boxes.Shared.Entites;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace Boxes.Frontend.Components.Pages.Productos
 {
@@ -24,6 +25,7 @@ namespace Boxes.Frontend.Components.Pages.Productos
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
+        [Inject] private ISnackbar Snackbar { get; set; } = null!;
 
         protected override async Task OnInitializedAsync()
         {
@@ -46,11 +48,12 @@ namespace Boxes.Frontend.Components.Pages.Productos
             if (httpActionResponse.Error)
             {
                 var message = await httpActionResponse.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                Snackbar.Add(message!, Severity.Error);
                 return;
             }
 
             Return();
+            Snackbar.Add("Registro creado", Severity.Success);
         }
 
         private void Return()

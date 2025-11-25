@@ -33,6 +33,11 @@ namespace Boxes.Shared.DTOs
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public int Quantity { get; set; } // Inventario
 
+       [Display(Name = "Tipo")]
+       [MaxLength(30, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
+       [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        public string Type { get; set; } = null!;
+
         public List<int>? ProductCategoryIds { get; set; }
         public List<string>? ProductImages { get; set; }
 
