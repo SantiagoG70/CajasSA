@@ -3,6 +3,7 @@ using Boxes.Shared.DTOs;
 using Boxes.Shared.Entites;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace Boxes.Frontend.Components.Pages.Cart
 {
@@ -12,14 +13,25 @@ namespace Boxes.Frontend.Components.Pages.Cart
         private float sumQuantity;
         private decimal sumValue;
 
+        [Inject] private IJSRuntime JS { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
+        [Inject] private InvoiceService InvoiceService { get; set; } = null!;
+
         public OrdenDTO OrdenDTO { get; set; } = new();
-         
+
         protected override async Task OnInitializedAsync()
         {
-            await LoadAsync();
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                await LoadAsync();
+                StateHasChanged();
+            }
         }
 
         private async Task LoadAsync()
@@ -27,13 +39,23 @@ namespace Boxes.Frontend.Components.Pages.Cart
             try
             {
                 var responseHppt = await Repository.GetAsync<List<OrdenTemporal>>("api/OrdenesTemporales/my");
-                temporalOrders = responseHppt.Response!;
+                if (responseHppt.Error || responseHppt.Response is null)
+                {
+                    temporalOrders = new List<OrdenTemporal>();
+                    sumQuantity = 0;
+                    sumValue = 0;
+                    return;
+                }
+
+                temporalOrders = responseHppt.Response;
                 sumQuantity = temporalOrders.Sum(x => x.Quantity);
                 sumValue = temporalOrders.Sum(x => x.Value);
             }
-            catch (Exception ex)
+            catch
             {
-                await SweetAlertService.FireAsync("Error", ex.Message, SweetAlertIcon.Error);
+                temporalOrders = new List<OrdenTemporal>();
+                sumQuantity = 0;
+                sumValue = 0;
             }
         }
 
@@ -63,7 +85,6 @@ namespace Boxes.Frontend.Components.Pages.Cart
 
             NavigationManager.NavigateTo("/Cart/OrdenConfirmed");
         }
-
 
         private async Task Delete(int temporalOrderId)
         {
@@ -108,5 +129,15 @@ namespace Boxes.Frontend.Components.Pages.Cart
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Producto eliminado del carro de compras.");
         }
 
+        private async Task GenerateInvoiceAsync()
+        {
+            var products = temporalOrders?.Select(x => x.Product).ToList() ?? new List<Producto>();
+            var total = sumValue;
+
+            var pdfBytes = InvoiceService.GenerateInvoice(products, total);
+            var base64 = Convert.ToBase64String(pdfBytes);
+
+            await JS.InvokeVoidAsync("downloadPdf", base64, "Factura_Carrito.pdf");
+        }
     }
 }

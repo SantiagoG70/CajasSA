@@ -18,7 +18,6 @@ namespace Boxes.Frontend.Components.Pages.Cart
         [Parameter, SupplyParameterFromQuery] public int RecordsNumber { get; set; } = 10;
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
 
-
         protected override async Task OnInitializedAsync()
         {
             await LoadAsync();
@@ -88,6 +87,5 @@ namespace Boxes.Frontend.Components.Pages.Cart
             }
             totalPages = response.Response;
         }
-
     }
 }

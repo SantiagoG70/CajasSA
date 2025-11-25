@@ -7,6 +7,7 @@ using Boxes.Frontend.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor.Services;
+using QuestPDF.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMudServices();
@@ -20,6 +21,8 @@ builder.Services.AddScoped<AuthenticationStateProvider, AuthenticationProviderJW
 builder.Services.AddScoped<ILoginService, AuthenticationProviderJWT>(x => x.GetRequiredService<AuthenticationProviderJWT>());
 builder.Services.AddScoped<IConfirmDialogService, ConfirmDialogService>();
 builder.Services.AddBlazoredModal();
+builder.Services.AddScoped<InvoiceService>();
+QuestPDF.Settings.License = LicenseType.Community;
 builder.Services.AddSweetAlert2(options => { });
 
 var app = builder.Build();
